@@ -16,3 +16,25 @@
   * pH vs number of mutations
   * Proteins vs number of mutations
   * Temperature vs number of mutations
+
+## Feature computation
+
+* Backbone dihedral: sin and cos of phi, psi and omega angels of a specific residue. (6 features)
+* Solvent accessible surface area (SASA):
+* Secondary structures (SS):
+* Hydrogen bonds:
+* Position-specific scoring matrix (PSSM):
+* Pairwise fitness score (PFS):
+* Multiple sequence alignment (MSA):
+*
+
+
+1. 1A43 -> if I want to take a chain, I shall take the "A"
+2. 1SPB:P -> I thought P is a chain but not!!! what is this then?
+3. 1A7V:Q1A -> the Q at 1st residue will be replace by A, need confirmation.
+4. 1ACB:I:F10W -> there is no I chain,
+5. 1CEY_F14N -> this is not same as 1A7V:Q1A since 14th residue is not F
+6. 1CEY_WT
+7. 1CFD_1-75
+8. 1CFD_1-78_F19Y
+9. 1VII_N68AK70M
