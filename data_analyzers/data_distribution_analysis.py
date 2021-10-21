@@ -8,13 +8,16 @@ import Bio.PDB.Polypeptide as Polypeptide
 
 def plot_col_histogram(train_set_df, test_set_df, col_name, 
                        xlabel, ylabel, output_filename, 
-                       bins=10, remove_xticks=False, sort_by_residue=False, save=True):
-    train_set_df[col_name].hist(bins=bins, grid=False, label="Train set", color="green", alpha=0.5)
+                       bins=15, rotate_xticks=False, remove_xticks=False, sort_by_residue=False, save=False):
+    train_set_df[col_name].hist(bins=bins, grid=False, label="Train set", color="lightgreen")
     plt.legend()
-    test_set_df[col_name].hist(bins=bins, grid=False, label="Test set", color="red", alpha=0.5)
+    test_set_df[col_name].hist(bins=bins, grid=False, label="Test set", color="salmon")
     plt.legend()
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
+    # locs, labels = plt.xticks()
+    # print(locs, labels)
+    if rotate_xticks: plt.xticks(rotation=45)
     if remove_xticks: plt.xticks([])
     if sort_by_residue: plt.xticks(np.arange(20), [Polypeptide.index_to_three(i) for i in range(20)], rotation=45)
     if save:
@@ -44,22 +47,28 @@ print(len(unique_proteins_train), len(unique_proteins_test)) # 211, 37
 common_proteins = list(set(unique_proteins_train) & set(unique_proteins_test))
 print(len(common_proteins)) # 0
 
-plot_col_histogram(train_set_df=train_set_df, test_set_df=test_set_df, col_name="pH", 
-                   xlabel="pH", ylabel="Number of mutations", output_filename="pH_vs_mutations_histogram")
+# plot_col_histogram(train_set_df=train_set_df, test_set_df=test_set_df, col_name="pH", 
+#                    xlabel="pH", ylabel="Number of mutations", output_filename="pH_vs_mutations_histogram")
 
-plot_col_histogram(train_set_df=train_set_df, test_set_df=test_set_df, col_name="T", 
-                   xlabel="Temperature", ylabel="Number of mutations", output_filename="temperature_vs_mutations_histogram")
+# plot_col_histogram(train_set_df=train_set_df, test_set_df=test_set_df, col_name="T", 
+#                    xlabel="Temperature (c)", ylabel="Number of mutations", output_filename="temperature_vs_mutations_histogram")
 
-plot_col_histogram(train_set_df=train_set_df, test_set_df=test_set_df, col_name="ddG", 
-                   xlabel="ddG", ylabel="Number of mutations", output_filename="ddG_vs_mutations_histogram")
+# plot_col_histogram(train_set_df=train_set_df, test_set_df=test_set_df, col_name="ddG", bins=80,
+#                    xlabel="ddG (kcal/mol)", ylabel="Number of mutations", output_filename="ddG_vs_mutations_histogram")
 
-plot_col_histogram(train_set_df=train_set_df, test_set_df=test_set_df, col_name="protein_name", 
-                   xlabel="Proteins", ylabel="Number of mutations", output_filename="proteins_vs_mutations_histogram", 
-                   remove_xticks=True)
+# plot_col_histogram(train_set_df=train_set_df, test_set_df=test_set_df, col_name="protein_name", 
+#                    xlabel="Proteins", ylabel="Number of mutations", output_filename="proteins_vs_mutations_histogram", 
+#                    remove_xticks=True)
 
-plot_col_histogram(train_set_df=train_set_df, test_set_df=test_set_df, col_name="mutation_site", 
-                   xlabel="Mutation site", ylabel="Number of mutations", output_filename="mutation_site_vs_mutations_histogram")
+# plot_col_histogram(train_set_df=train_set_df, test_set_df=test_set_df, col_name="mutation_site", 
+#                    xlabel="Mutation site", ylabel="Number of mutations", output_filename="mutation_site_vs_mutations_histogram")
 
-plot_col_histogram(train_set_df=train_set_df, test_set_df=test_set_df, col_name="wild_residue", 
-                   xlabel="Amino acids", ylabel="Number of mutations", output_filename="amino_acid_vs_mutations_histogram", 
-                   sort_by_residue=True)
+# plot_col_histogram(train_set_df=train_set_df, test_set_df=test_set_df, col_name="wild_residue", 
+#                    xlabel="Amino acids", ylabel="Number of mutations", output_filename="amino_acid_vs_mutations_histogram", 
+#                    sort_by_residue=True)
+
+train_set_df["wild_mutant_residue_pair"] = train_set_df["wild_residue"] + "-" + train_set_df["mutant_residue"]
+test_set_df["wild_mutant_residue_pair"] = test_set_df["wild_residue"] + "-" + test_set_df["mutant_residue"]
+plot_col_histogram(train_set_df=train_set_df, test_set_df=test_set_df, col_name="wild_mutant_residue_pair", 
+                   xlabel="Wild-mutant residue pairs", ylabel="Number of mutations", output_filename="wild_mutant_pair_vs_mutations_histogram",
+                   remove_xticks=True, bins=50)
