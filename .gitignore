@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+data/pdbs/*.cif
+data/pdbs_clean/*.pdb

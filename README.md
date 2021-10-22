@@ -19,7 +19,7 @@
 
 ## Feature computation
 
-* Backbone dihedral: sin and cos of phi, psi and omega angels of a specific residue. (6 features)
+* Backbone dihedral: sin and cos of phi, psi and omega angels of backbone atoms [N, CA, C] of a residue. (6 features)
 * Solvent accessible surface area (SASA):
 * Secondary structures (SS):
 * Hydrogen bonds:
