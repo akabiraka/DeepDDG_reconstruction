@@ -19,15 +19,23 @@
 
 ## Feature computation
 
-* Backbone dihedral: sin and cos of phi, psi and omega angels of backbone atoms [N, CA, C] of a residue. (6 features)
-* Solvent accessible surface area (SASA):
-* Secondary structures (SS):
+* Backbone dihedral: phi, psi and omega angels of backbone atoms [N, CA, C] of a residue. (6 features)
+  * Followed the below two links:
+    * `https://biopython.org/docs/dev/api/Bio.PDB.internal_coords.html#Bio.PDB.internal_coords.IC_Residue.pick_angle`
+    * `https://biopython.org/docs/latest/api/Bio.PDB.vectors.html?highlight=calc_dihedral#Bio.PDB.vectors.calc_dihedral`
+* Solvent accessible surface area (SASA): using Naccess
+  * `http://www.bioinf.manchester.ac.uk/naccess/`
+  * `https://www.biostars.org/p/43000/`
+* Secondary structures (SS): using Stride
+  * Downloaded and compiled following `http://webclu.bio.wzw.tum.de/stride/`
+  * A copy of Stridee is in the `compiled_softwares` directory
+  * DeepDDG mentions they use 3 bits for SS, but did not mention for which 3 types.
+  * So, I keep coil (C), beta-sheet (E) and alpha-helix (H). Although DSSP classifies SS as 8 types.
 * Hydrogen bonds:
 * Position-specific scoring matrix (PSSM):
 * Pairwise fitness score (PFS):
 * Multiple sequence alignment (MSA):
 *
-
 
 1. 1A43 -> if I want to take a chain, I shall take the "A"
 2. 1SPB:P -> I thought P is a chain but not!!! what is this then?

@@ -130,3 +130,5 @@ dmypy.json
 
 data/pdbs/*.cif
 data/pdbs_clean/*.pdb
+data/secondary_structures/*.ss
+software_compilation_dir/*

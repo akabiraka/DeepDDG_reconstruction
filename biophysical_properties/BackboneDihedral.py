@@ -72,11 +72,11 @@ class BackboneDihedral(object):
         return np.array(all_angles)
             
         
-pdb_file = "data/pdbs_clean/1a5eA.pdb"        
-bd = BackboneDihedral()
+# pdb_file = "data/pdbs_clean/1a5eA.pdb"        
+# bd = BackboneDihedral()
 
-angles = bd.get_angles_of_a_residue(pdb_file=pdb_file, residue_num=121, chain_id="A", type="both")
-print(angles)
+# angles = bd.get_angles_of_a_residue(pdb_file=pdb_file, residue_num=121, chain_id="A", type="both")
+# print(angles)
 
-angles = bd.get_angles_of_residues(pdb_file=pdb_file, chain_id="A", from_residue=150, n_residues=6, type="both")
-print(angles)
+# angles = bd.get_angles_of_residues(pdb_file=pdb_file, chain_id="A", from_residue=150, n_residues=6, type="both")
+# print(angles)
