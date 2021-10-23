@@ -21,8 +21,8 @@
 
 * Backbone dihedral: phi, psi and omega angels of backbone atoms [N, CA, C] of a residue. (6 features)
   * Followed the below two links:
-    * https://biopython.org/docs/dev/api/Bio.PDB.internal_coords.html#Bio.PDB.internal_coords.IC_Residue.pick_angle
-    * https://biopython.org/docs/latest/api/Bio.PDB.vectors.html?highlight=calc_dihedral#Bio.PDB.vectors.calc_dihedral
+    * `https://biopython.org/docs/dev/api/Bio.PDB.internal_coords.html#Bio.PDB.internal_coords.IC_Residue.pick_angle`
+    * `https://biopython.org/docs/latest/api/Bio.PDB.vectors.html?highlight=calc_dihedral#Bio.PDB.vectors.calc_dihedral`
 * Solvent accessible surface area (SASA): using Naccess
   * `http://www.bioinf.manchester.ac.uk/naccess/`
   * `https://www.biostars.org/p/43000/`
