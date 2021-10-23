@@ -28,7 +28,6 @@
   * `https://www.biostars.org/p/43000/`
 * Secondary structures (SS): using Stride
   * Downloaded and compiled following `http://webclu.bio.wzw.tum.de/stride/`
-  * A copy of Stridee is in the `compiled_softwares` directory
   * DeepDDG mentions they use 3 bits for SS, but did not mention for which 3 types.
   * So, I keep coil (C), beta-sheet (E) and alpha-helix (H). Although DSSP classifies SS as 8 types.
 * Hydrogen bonds:
