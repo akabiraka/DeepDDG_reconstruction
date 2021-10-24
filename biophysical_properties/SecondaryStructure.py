@@ -9,7 +9,7 @@ import numpy as np
 class SecondaryStructure(object):
     def __init__(self) -> None:
         super().__init__()
-        self.stride_path = "./compiled_3rd_party_softwares/stride"
+        self.stride_path = "./3rd_party_items/stride"
         self.SS_dictionary = "CEH"
         
     def __parse_stride_file(self, file):
