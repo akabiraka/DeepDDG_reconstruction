@@ -75,7 +75,7 @@ class SecondaryStructure(object):
             str: letters defined in self.SS_dictionary
         """
         ss = self.__get_by_Stride(pdb_file, save=False)
-        ss = ss if n_residues is None else ss[from_residue: from_residue+n_residues]
+        ss = ss if n_residues is None else ss[from_residue: from_residue+n_residues-1]
         if type=="letter": return ss
         elif type=="one-hot":
             return np.array([[0 if char != letter else 1 for char in self.SS_dictionary] for letter in ss])
