@@ -61,12 +61,12 @@ class PSSM(object):
         return self.__typed_output(pssm, type)
         
 
-fasta_file = "data/fastas/4eiuA.fasta"
-pssm_file = "data/pssms/4eiuA.pssm"
+# fasta_file = "data/fastas/4eiuA.fasta"
+# pssm_file = "data/pssms/4eiuA.pssm"
 
 # sample usage
-pssm = PSSM()
-pssm.set_up(fasta_file)
+# pssm = PSSM()
+# pssm.set_up(fasta_file)
 
 # result = pssm.of_a_residue(pssm_file, 0, type="np") # check boundary value
 # result = pssm.of_a_residue(pssm_file, 241, type="np") # check boundary value
