@@ -38,9 +38,10 @@
     * Quick start on BLAST: https://www.ncbi.nlm.nih.gov/books/NBK569856/
   * Download the database from https://ftp.ncbi.nlm.nih.gov/blast/db/
     * File name: swissprot.tar.gz (because it is small to setup and test)
-  * Authors' used database is rp-seq-55
+  * Authors' used database is *rp-seq-55*
     * Will be setup later
     *
+  * Authors' also applied softmax over PSSM row-wise as the final PSSM.
   * Biopython provides `NcbipsiblastCommandline` to use psi-blast software.
     * `from Bio.Blast.Applications import NcbipsiblastCommandline`
   * Sample example of BLAST usage from command line:
