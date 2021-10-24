@@ -31,7 +31,24 @@
   * DeepDDG mentions they use 3 bits for SS, but did not mention for which 3 types.
   * So, I keep coil (C), beta-sheet (E) and alpha-helix (H). Although DSSP classifies SS as 8 types.
 * Hydrogen bonds:
-* Position-specific scoring matrix (PSSM):
+* Position-specific scoring matrix (PSSM): using PSI-BLAST (authors version 2.7.1)
+  * Download the latest version ncbi-blast executables from https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/
+    * File name: ncbi-blast-2.12.0+-x64-linux.tar.gz
+    * ncbi-blast executables contain blastp, blastn, psiblast and so on.
+    * Quick start on BLAST: https://www.ncbi.nlm.nih.gov/books/NBK569856/
+  * Download the database from https://ftp.ncbi.nlm.nih.gov/blast/db/
+    * File name: swissprot.tar.gz (because it is small to setup and test)
+  * Authors' used database is rp-seq-55
+    * Will be setup later
+    *
+  * Biopython provides `NcbipsiblastCommandline` to use psi-blast software.
+    * `from Bio.Blast.Applications import NcbipsiblastCommandline`
+  * Sample example of BLAST usage from command line:
+    * To download swissprot: `3rd_party_items/ncbi-blast-2.12.0+/bin/update_blastdb.pl --decompress swissprot`
+    * To download all "nr" databases: "nr" is the non-redundent version of the sequence database.
+      * `3rd_party_items/ncbi-blast-2.12.0+/bin/update_blastdb.pl --decompress nr [*]`
+    * To create blast-db from fasta sequences:
+      * `3rd_party_items/ncbi-blast-2.12.0+/bin/makeblastdb -dbtype prot -in path/4eiuA.fasta -input_type fasta -out path_to_save/db_name`
 * Pairwise fitness score (PFS):
 * Multiple sequence alignment (MSA):
 *
