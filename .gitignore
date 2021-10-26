@@ -133,5 +133,6 @@ data/pdbs_clean/*.pdb
 data/secondary_structures/*.ss
 data/fastas/*.fasta 
 data/pssms/*.pssm
+data/hbs/*
 3rd_party_items/*
 software_compilation_dir/*

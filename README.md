@@ -30,7 +30,10 @@
   * Downloaded and compiled following http://webclu.bio.wzw.tum.de/stride/
   * DeepDDG mentions they use 3 bits for SS, but did not mention for which 3 types.
   * So, I keep coil (C), beta-sheet (E) and alpha-helix (H). Although DSSP classifies SS as 8 types.
-* Hydrogen bonds:
+* Hydrogen bonds: using HBPLUS
+  * To download: https://www.ebi.ac.uk/thornton-srv/software/HBPLUS/
+  * Usage manual: https://www.ebi.ac.uk/thornton-srv/software/HBPLUS/manual.html
+  *
 * Position-specific scoring matrix (PSSM): using PSI-BLAST (authors version 2.7.1)
   * Download the latest version ncbi-blast executables from https://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/LATEST/
     * File name: ncbi-blast-2.12.0+-x64-linux.tar.gz
@@ -50,7 +53,14 @@
       * `3rd_party_items/ncbi-blast-2.12.0+/bin/update_blastdb.pl --decompress nr [*]`
     * To create blast-db from fasta sequences:
       * `3rd_party_items/ncbi-blast-2.12.0+/bin/makeblastdb -dbtype prot -in path/4eiuA.fasta -input_type fasta -out path_to_save/db_name`
-* Pairwise fitness score (PFS):
+* Pairwise fitness score (PFS): using HH-suite3.0
+  * HH-suite homepage: https://github.com/soedinglab/hh-suite
+  * To download precompiled HH-suite: https://mmseqs.com/hhsuite/
+    * File name: hhsuite-linux-sse2.tar.gz
+  * User guide: https://github.com/soedinglab/hh-suite/wiki#generating-a-multiple-sequence-alignment-using-hhblits
+  * To set up the database I first download the scop40_01Mar17.tgz from https://wwwuser.gwdg.de/~compbiol/data/hhsuite/databases/hhsuite_dbs/ (because it is small 381M)
+    * Sample usage: ./3rd_party_items/hhsuite/bin/hhblits -i data/fastas/4eiuA.fasta -o test.msa -d ./3rd_party_items/scop40_01Mar17/scop40
+  * To download uniprot_20: https://wwwuser.gwdg.de/~compbiol/data/hhsuite/benchmark/
 * Multiple sequence alignment (MSA):
 *
 
