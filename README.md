@@ -24,7 +24,7 @@
     * https://biopython.org/docs/dev/api/Bio.PDB.internal_coords.html#Bio.PDB.internal_coords.IC_Residue.pick_angle
     * https://biopython.org/docs/latest/api/Bio.PDB.vectors.html?highlight=calc_dihedral#Bio.PDB.vectors.calc_dihedral
 * Solvent accessible surface area (SASA): using Naccess
-  * http://www.bioinf.manchester.ac.uk/naccess/
+  * To download: http://www.bioinf.manchester.ac.uk/naccess/
   * https://www.biostars.org/p/43000/
 * Secondary structures (SS): using Stride
   * Downloaded and compiled following http://webclu.bio.wzw.tum.de/stride/
@@ -53,7 +53,7 @@
       * `3rd_party_items/ncbi-blast-2.12.0+/bin/update_blastdb.pl --decompress nr [*]`
     * To create blast-db from fasta sequences:
       * `3rd_party_items/ncbi-blast-2.12.0+/bin/makeblastdb -dbtype prot -in path/4eiuA.fasta -input_type fasta -out path_to_save/db_name`
-* Pairwise fitness score (PFS): using HH-suite3.0
+* Pairwise fitness score (PFS) after Multiple sequence alignment (MSA): using HH-suite3.0
   * HH-suite homepage: https://github.com/soedinglab/hh-suite
   * To download precompiled HH-suite: https://mmseqs.com/hhsuite/
     * File name: hhsuite-linux-sse2.tar.gz
@@ -61,7 +61,7 @@
   * To set up the database I first download the scop40_01Mar17.tgz from https://wwwuser.gwdg.de/~compbiol/data/hhsuite/databases/hhsuite_dbs/ (because it is small 381M)
     * Sample usage: ./3rd_party_items/hhsuite/bin/hhblits -i data/fastas/4eiuA.fasta -o test.msa -d ./3rd_party_items/scop40_01Mar17/scop40
   * To download uniprot_20: https://wwwuser.gwdg.de/~compbiol/data/hhsuite/benchmark/
-* Multiple sequence alignment (MSA):
+*
 *
 
 1. 1A43 -> if I want to take a chain, I shall take the "A"

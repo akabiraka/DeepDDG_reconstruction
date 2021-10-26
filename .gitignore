@@ -134,5 +134,6 @@ data/secondary_structures/*.ss
 data/fastas/*.fasta 
 data/pssms/*.pssm
 data/hbs/*
+data/msas/*.msa
 3rd_party_items/*
 software_compilation_dir/*
