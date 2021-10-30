@@ -10,7 +10,7 @@ class BackboneDihedral(object):
     def __init__(self) -> None:
         super().__init__()
         
-    def get_angles_of_a_residue(self, pdb_file, residue_num, chain_id="A", type=None):
+    def of_a_residue(self, pdb_file, residue_num, chain_id="A", type=None):
         """
         Returns phi, psi and omega angles of a residue.
         # used the following two links to compute phi, psi and omega angels
@@ -46,7 +46,7 @@ class BackboneDihedral(object):
         else: return np.array([phi, psi, omega])
     
     
-    def get_angles_of_residues(self, pdb_file, chain_id="A", from_residue=1, n_residues=None, type=None):
+    def of_some_residues(self, pdb_file, chain_id="A", from_residue=1, n_residues=None, type=None):
         """It conputes angles for a subset of residues using from_residue and n_residues parameter.
         If they are not passed, the angles of all residues of the protein will be returned.
 
@@ -67,7 +67,7 @@ class BackboneDihedral(object):
         else: n_residues = from_residue+n_residues 
         all_angles = []
         for i in range(from_residue, n_residues):
-            all_angles.append(self.get_angles_of_a_residue(pdb_file, i, chain_id, type))
+            all_angles.append(self.of_a_residue(pdb_file, i, chain_id, type))
         
         return np.array(all_angles)
             
@@ -75,8 +75,8 @@ class BackboneDihedral(object):
 # pdb_file = "data/pdbs_clean/1a5eA.pdb"        
 # bd = BackboneDihedral()
 
-# angles = bd.get_angles_of_a_residue(pdb_file=pdb_file, residue_num=121, chain_id="A", type="both")
+# angles = bd.of_a_residue(pdb_file=pdb_file, residue_num=121, chain_id="A", type="both")
 # print(angles)
 
-# angles = bd.get_angles_of_residues(pdb_file=pdb_file, chain_id="A", from_residue=150, n_residues=6, type="both")
+# angles = bd.of_some_residues(pdb_file=pdb_file, chain_id="A", from_residue=150, n_residues=6, type="both")
 # print(angles)
