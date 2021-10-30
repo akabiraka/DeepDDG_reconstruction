@@ -4,17 +4,17 @@ sys.path.append("../DeepDDG_reconstruction")
 import subprocess
 
 class HydrogenBond(object):
-    def __init__(self) -> None:
+    def __init__(self, output_dir=None) -> None:
         super().__init__()
-        self.hbplus = "3rd_party_items/hbplus"
+        self.output_dir = "data/hbs/" if output_dir is None else output_dir
+        self.hbplus_exe = "3rd_party_items/hbplus_exe"
         
 
-    def set_up(self, pdb_file, output_path):  
-        command = "cd {} && ../../{} ../../{}".format(output_path, self.hbplus, pdb_file)
+    def set_up(self, pdb_file):  
+        command = "cd {} && ../../{} ../../{}".format(self.output_dir, self.hbplus_exe, pdb_file)
         # print(command)
         subprocess.getoutput(command)
 
 pdb_file = "data/pdbs_clean/1a43A.pdb" 
-output_path = "data/hbs/"
 HB = HydrogenBond()
-HB.set_up(pdb_file, output_path)
+HB.set_up(pdb_file)

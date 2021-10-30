@@ -12,16 +12,12 @@ from Bio.Blast.Applications import NcbipsiblastCommandline
 class PSSM(object):
     """PSSSM stands for position-specific socring-matrix
     """
-    def __init__(self, db=None) -> None:
+    def __init__(self, db=None, output_dir=None) -> None:
         super().__init__()
-        self.pssm_output_dir = "data/pssms/"
-        self.psiblast_exe = "3rd_party_items/ncbi-blast-2.12.0+/bin/psiblast"
         self.db = "3rd_party_items/swissprot_db/swissprot" if db is None else db
-        
-        
-    def set_db(self, db):
-        self.db = db
-        
+        self.output_dir = "data/pssms/" if output_dir is None else output_dir
+        self.psiblast_exe = "3rd_party_items/ncbi-blast-2.12.0+/bin/psiblast"
+
         
     def set_up(self, fasta_file, force=False):
         """This blast run the query sequence 3 iterations against a db using psiblast program,
@@ -32,7 +28,7 @@ class PSSM(object):
             force (bool): whether to enforce PSSM set up from start
         """
         pdbid = fasta_file.split("/")[2].split(".")[0]
-        output_file_path = self.pssm_output_dir + pdbid +".pssm"
+        output_file_path = self.output_dir + pdbid +".pssm"
         
         if os.path.exists(output_file_path) and force==False: 
             print("PSSM is already set up for {}. To set-up again, set force=True".format(pdbid))

@@ -25,7 +25,8 @@
     * https://biopython.org/docs/latest/api/Bio.PDB.vectors.html?highlight=calc_dihedral#Bio.PDB.vectors.calc_dihedral
 * Solvent accessible surface area (SASA): using Naccess
   * To download: http://www.bioinf.manchester.ac.uk/naccess/
-  * https://www.biostars.org/p/43000/
+  * Get the access key from the authors, and compile it from /home directory. If the directory path contains space (i.e. ..../New volme/....) it cannot it compiled. It requires gfortran and csh.
+  * Sample usage: naccess 1a43A.pdb
 * Secondary structures (SS): using Stride
   * Downloaded and compiled following http://webclu.bio.wzw.tum.de/stride/
   * DeepDDG mentions they use 3 bits for SS, but did not mention for which 3 types.

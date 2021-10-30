@@ -7,9 +7,10 @@ import string
 import numpy as np
 
 class SecondaryStructure(object):
-    def __init__(self) -> None:
+    def __init__(self, output_dir=None) -> None:
         super().__init__()
-        self.stride_path = "./3rd_party_items/stride"
+        self.output_dir = "data/secondary_structures/" if output_dir is None else output_dir
+        self.stride_exe = "3rd_party_items/stride"
         self.SS_dictionary = "CEH"
         
     def __parse_stride_file(self, file):
@@ -24,8 +25,8 @@ class SecondaryStructure(object):
                 
     def __get_by_Stride(self, pdb_file, save=False):
         pdb_file_name = pdb_file.split("/")[2].split(".")[0]
-        output_file_path = "data/secondary_structures/{}.ss".format(pdb_file_name)
-        result = subprocess.run([self.stride_path, pdb_file, "-f"+output_file_path], stdout=subprocess.PIPE)
+        output_file_path = self.output_dir + pdb_file_name + ".ss"
+        result = subprocess.run([self.stride_exe, pdb_file, "-f"+output_file_path], stdout=subprocess.PIPE)
         ss = self.__parse_stride_file(output_file_path)
         if save:
             with open(output_file_path, "w") as f:

@@ -135,5 +135,7 @@ data/fastas/*.fasta
 data/pssms/*.pssm
 data/hbs/*
 data/msas/*.msa
+data/msas/*.a3m
+data/sasas/*.asa
 3rd_party_items/*
 software_compilation_dir/*
