@@ -33,7 +33,7 @@ class PSSM(object):
         self.pdb_id = pdbid 
 
         if os.path.exists(output_file_path) and force==False: 
-            print("PSSM is already set up for {}. To set-up again, set force=True".format(pdbid))
+            print("PSSM is already set up for {}. To set-up again, set force=True.".format(pdbid))
             return
         else:
             print("Computing PSSM for {} using psi-blast ... ...".format(pdbid))    
@@ -81,7 +81,7 @@ class PSSM(object):
 
         Args:
             pssm_file (str): a pssm file path
-            residue_index (int): a residue number
+            residue_index (int): a residue number. Must be 0-based index.
             type (str, optional): If not softmax, it will return raw numpy array.
                 Defaults to "softmax".
 
@@ -91,11 +91,12 @@ class PSSM(object):
         pssm_file = self.__get_pssm_file()
         df, residue_dict = self.__parse_pssm_output_file(pssm_file)
         pssm = np.array(df.loc[residue_index, 2:21], dtype=float32)
+        # print(pssm)
         if type=="softmax": 
             pssm = softmax(pssm)
             # print("should be 1: ", pssm.sum())
         pssm_score = pssm[residue_dict[df.loc[residue_index, 1]]]
-        return np.array(pssm_score)
+        return np.array([pssm_score])
     
     
     # def of_some_residues(self, from_residue=0, n_residues=None, type="softmax"):

@@ -136,6 +136,6 @@ data/pssms/*.pssm
 data/hbs/*
 data/msas/*.msa
 data/msas/*.a3m
-data/sasas/*.asa
+data/sasas/*.rsa
 3rd_party_items/*
 software_compilation_dir/*

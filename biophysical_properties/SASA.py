@@ -19,8 +19,8 @@ class SASA(object):
         pdbid = pdb_file.split("/")[2].split(".")[0]
         self.pdb_id = pdbid
 
-        if os.path.exists(self.output_dir+pdbid+".asa") and force==False: 
-            print("SASA is already set up for {}. To set-up again, set force=True".format(pdbid))
+        if os.path.exists(self.output_dir+pdbid+".rsa") and force==False: 
+            print("SASA is already set up for {}. To set-up again, set force=True.".format(pdbid))
             return
         else:
             print("Computing SASA for {} using Naccess ... ...".format(pdbid)) 

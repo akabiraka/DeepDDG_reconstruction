@@ -65,12 +65,16 @@
 *
 *
 
-1. 1A43 -> if I want to take a chain, I shall take the "A"
-2. 1SPB:P -> I thought P is a chain but not!!! what is this then?
-3. 1A7V:Q1A -> the Q at 1st residue will be replace by A, need confirmation.
-4. 1ACB:I:F10W -> there is no I chain,
-5. 1CEY_F14N -> this is not same as 1A7V:Q1A since 14th residue is not F
-6. 1CEY_WT
-7. 1CFD_1-75
-8. 1CFD_1-78_F19Y
-9. 1VII_N68AK70M
+## Clarifications
+* 1A43 -> if I want to take a chain, I shall take the "A"
+* 1SPB:P -> I thought P is a chain but not!!! what is this then?
+* 1A7V:Q1A -> the Q at 1st residue will be replace by A, need confirmation.
+* 1ACB:I:F10W -> there is no I chain,
+* 1CEY_F14N -> this is not same as 1A7V:Q1A since 14th residue is not F
+* 1CEY_WT
+* 1CFD_1-75
+* 1CFD_1-78_F19Y
+* 1VII_N68AK70M
+
+* Where to find rp-seq-55 sequence set?
+* The SASA value is taken from rsa file the absolute (ABS) all atoms value, is it right?
