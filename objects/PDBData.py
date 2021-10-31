@@ -116,7 +116,7 @@ class PDBData(object):
             seq += Polypeptide.three_to_one(residue.get_resname())
         
         if save_as_fasta and output_fasta_dir is not None:
-            with open("{}{}_from_structure.fasta".format(output_fasta_dir, pdb_id), "w") as fasta_file_handle:
+            with open("{}{}{}.fasta".format(output_fasta_dir, pdb_id, chain_id), "w") as fasta_file_handle:
                 fasta_file_handle.write(">{}:{}\n".format(pdb_id.upper(), chain_id))
                 fasta_file_handle.write(seq)
         print("Generating fasta {}:{}:{} ... ..".format(pdb_id, chain_id, len(seq)))

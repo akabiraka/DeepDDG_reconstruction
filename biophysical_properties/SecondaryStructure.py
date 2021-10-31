@@ -51,12 +51,7 @@ class SecondaryStructure(object):
         Returns:
             str: a letter defined in self.SS_dictionary
         """
-        ss = self.__get_by_Stride(pdb_file, save=False)
-        if residue_index >= len(ss):
-            print("residue_index is out of range. Expected: [0, {}], Received: {}".format(len(ss)-1, residue_index))
-            print("setting residue_index={} as the last index".format(len(ss)-1))
-            residue_index = len(ss)-1
-        
+        ss = self.__get_by_Stride(pdb_file, save=True)
         letter = ss[residue_index]
         if type=="letter": return letter
         elif type=="one-hot": return np.array([0 if char != letter else 1 for char in self.SS_dictionary])
