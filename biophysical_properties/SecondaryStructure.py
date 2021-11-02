@@ -41,22 +41,22 @@ class SecondaryStructure(object):
     def set_secondary_structure_dictionary(self, ss_dict):
         self.SS_dictionary = ss_dict
     
-    def of_a_residue(self, pdb_file, residue_index, type="one-hot"):
+    def of_a_residue(self, pdb_file, residue_index, return_type="one-hot"):
         """Returns secondary structure of a residue.
 
         Args:
             pdb_file (str): a pdb file path
             residue_index (int): It's 0 based. 
-            type (str): Could be "one-hot" or "letter"
+            return_type (str): Could be "one-hot" or "letter"
         Returns:
             str: a letter defined in self.SS_dictionary
         """
         ss = self.__get_by_Stride(pdb_file, save=True)
         letter = ss[residue_index]
-        if type=="letter": return letter
-        elif type=="one-hot": return np.array([0 if char != letter else 1 for char in self.SS_dictionary])
+        if return_type=="letter": return letter
+        elif return_type=="one-hot": return np.array([0 if char != letter else 1 for char in self.SS_dictionary], dtype=np.float32)
     
-    def of_some_residues(self, pdb_file, from_residue=0, n_residues=None, type="one-hot"):
+    def of_some_residues(self, pdb_file, from_residue=0, n_residues=None, return_type="one-hot"):
         """Returns secondary structure of a set of residues defined by from_residue and n_residues.
         When n_residues is None, it returns the whole secondary strucutre of the protein as letters 
         defined by self.SS_dictionary.
@@ -66,41 +66,41 @@ class SecondaryStructure(object):
             from_residue (int, optional): index of a residue. Defaults to 0.
             n_residues (int, optional): number of residues to process starting from from_residue. 
                 Defaults to None.
-            type (str): Could be "one-hot" or "letter"
+            return_type (str): Could be "one-hot" or "letter"
         Returns:
             str: letters defined in self.SS_dictionary
         """
         ss = self.__get_by_Stride(pdb_file, save=False)
         ss = ss if n_residues is None else ss[from_residue: from_residue+n_residues-1]
-        if type=="letter": return ss
-        elif type=="one-hot":
+        if return_type=="letter": return ss
+        elif return_type=="one-hot":
             return np.array([[0 if char != letter else 1 for char in self.SS_dictionary] for letter in ss])
 
         
 # pdb_file = "data/pdbs_clean/1a5eA.pdb" 
 # secondaryStructure = SecondaryStructure() 
-# result = secondaryStructure.of_a_residue(pdb_file, -1, type="one-hot") # from opposite access check
-# result = secondaryStructure.of_a_residue(pdb_file, 0, type="one-hot") # boundary value check
-# result = secondaryStructure.of_a_residue(pdb_file, 155, type="one-hot") # boundary value check
-# result = secondaryStructure.of_a_residue(pdb_file, 156, type="one-hot") # index out of range check
-# result = secondaryStructure.of_a_residue(pdb_file, 5000, type="one-hot") # index out of range check
+# result = secondaryStructure.of_a_residue(pdb_file, -1, return_type="one-hot") # from opposite access check
+# result = secondaryStructure.of_a_residue(pdb_file, 0, return_type="one-hot") # boundary value check
+# result = secondaryStructure.of_a_residue(pdb_file, 155, return_type="one-hot") # boundary value check
+# result = secondaryStructure.of_a_residue(pdb_file, 156, return_type="one-hot") # index out of range check
+# result = secondaryStructure.of_a_residue(pdb_file, 5000, return_type="one-hot") # index out of range check
 
-# result = secondaryStructure.of_a_residue(pdb_file, -1, type="letter") # from opposite access check
-# result = secondaryStructure.of_a_residue(pdb_file, 0, type="letter") # boundary value check
-# result = secondaryStructure.of_a_residue(pdb_file, 155, type="letter") # boundary value check
-# result = secondaryStructure.of_a_residue(pdb_file, 156, type="letter") # index out of range check
-# result = secondaryStructure.of_a_residue(pdb_file, 5000, type="letter") # index out of range check
+# result = secondaryStructure.of_a_residue(pdb_file, -1, return_type="letter") # from opposite access check
+# result = secondaryStructure.of_a_residue(pdb_file, 0, return_type="letter") # boundary value check
+# result = secondaryStructure.of_a_residue(pdb_file, 155, return_type="letter") # boundary value check
+# result = secondaryStructure.of_a_residue(pdb_file, 156, return_type="letter") # index out of range check
+# result = secondaryStructure.of_a_residue(pdb_file, 5000, return_type="letter") # index out of range check
 
-# result = secondaryStructure.of_some_residues(pdb_file, type="one-hot") # getting all SS values check
-# result = secondaryStructure.of_some_residues(pdb_file, from_residue=-10, n_residues=1, type="one-hot") # from opposite access check
-# result = secondaryStructure.of_some_residues(pdb_file, from_residue=0, n_residues=10, type="one-hot") # regular check
-# result = secondaryStructure.of_some_residues(pdb_file, from_residue=150, n_residues=6, type="one-hot") # boundary value check
-# result = secondaryStructure.of_some_residues(pdb_file, from_residue=150, n_residues=500, type="one-hot") # index out of range check
+# result = secondaryStructure.of_some_residues(pdb_file, return_type="one-hot") # getting all SS values check
+# result = secondaryStructure.of_some_residues(pdb_file, from_residue=-10, n_residues=1, return_type="one-hot") # from opposite access check
+# result = secondaryStructure.of_some_residues(pdb_file, from_residue=0, n_residues=10, return_type="one-hot") # regular check
+# result = secondaryStructure.of_some_residues(pdb_file, from_residue=150, n_residues=6, return_type="one-hot") # boundary value check
+# result = secondaryStructure.of_some_residues(pdb_file, from_residue=150, n_residues=500, return_type="one-hot") # index out of range check
 
-# result = secondaryStructure.of_some_residues(pdb_file, type="letter") # getting all SS values check
-# result = secondaryStructure.of_some_residues(pdb_file, from_residue=-10, n_residues=1, type="letter") # from opposite access check
-# result = secondaryStructure.of_some_residues(pdb_file, from_residue=0, n_residues=10, type="letter") # regular check
-# result = secondaryStructure.of_some_residues(pdb_file, from_residue=150, n_residues=6, type="letter") # boundary value check
-# result = secondaryStructure.of_some_residues(pdb_file, from_residue=150, n_residues=500, type="letter") # index out of range check
+# result = secondaryStructure.of_some_residues(pdb_file, return_type="letter") # getting all SS values check
+# result = secondaryStructure.of_some_residues(pdb_file, from_residue=-10, n_residues=1, return_type="letter") # from opposite access check
+# result = secondaryStructure.of_some_residues(pdb_file, from_residue=0, n_residues=10, return_type="letter") # regular check
+# result = secondaryStructure.of_some_residues(pdb_file, from_residue=150, n_residues=6, return_type="letter") # boundary value check
+# result = secondaryStructure.of_some_residues(pdb_file, from_residue=150, n_residues=500, return_type="letter") # index out of range check
 
 # print(result)
