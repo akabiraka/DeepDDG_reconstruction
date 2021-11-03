@@ -66,15 +66,23 @@
 *
 
 ## Clarifications
+* Column name: PDB ID with modifications to be made
 * 1A43 -> if I want to take a chain, I shall take the "A"
 * 1SPB:P -> I thought P is a chain but not!!! what is this then?
-* 1A7V:Q1A -> the Q at 1st residue will be replace by A, need confirmation.
+* 1A7V:Q1A -> the 1st residue is Q, which will be substituted by A.
 * 1ACB:I:F10W -> there is no I chain,
-* 1CEY_F14N -> this is not same as 1A7V:Q1A since 14th residue is not F
+* 1CEY_F14N -> you can see that although it's the 13th residue according to the PDB, the author labeled it 14.
 * 1CEY_WT
-* 1CFD_1-75
-* 1CFD_1-78_F19Y
-* 1VII_N68AK70M
+* 1CFD_1-75: I think I need to consider only 1-75th residue
+* 1CFD_1-78_F19Y: I think I need to consider 1-78th residue, here 19th is F, will be substituted by Y.
+* 1VII_N68AK70M: N 68 ->A and K 70-> M
 
 * Where to find rp-seq-55 sequence set?
 * The SASA value is taken from rsa file the absolute (ABS) all atoms value, is it right?
+
+## Data issues
+* for the same mutation of the same protein the dataset contains different ddg values. i.e 1A43 has 9 mutations where 4 of them are repeated with different ddG values.Actions: take the 1st or average 
+* Since chain id is not given, I selected the 1st chain by default. Because in many cases chain A is not present.
+* 1hfzA has the 1st residue as 1x, what the ...? I take the starting index as where the residue id becomes integer.
+* 1lmb: the chain ids are "1", "2", "3", "4". I have taken the "4", it has 92 residues, from 1-92 but "3" has 6-92.
+* Entry 2A01 was removed. https://www.rcsb.org/structure/removed/2A01
