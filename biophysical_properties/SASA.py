@@ -42,7 +42,7 @@ class SASA(object):
         asa_df = self.parse_rsa_file(rsa_file)
         asa_value = asa_df[asa_df[3]==residue_index][4].astype(float)
         # print(np.array(asa_value))
-        return np.array(asa_value)
+        return np.array(asa_value, dtype=np.float32)
 
 # pdb_file = "data/pdbs_clean/1a43A.pdb" 
 # sasa = SASA()

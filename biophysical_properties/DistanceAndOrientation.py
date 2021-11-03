@@ -18,10 +18,10 @@ class DistanceAndOrientation(object):
         ca_ca_unit_vector = ca_ca_diff_vector / np.linalg.norm(ca_ca_diff_vector)
 
         ca_c_diff_vector = neighbor_residue["CA"].coord - neighbor_residue["C"].coord
-        ca_c_unit_vector = ca_c_diff_vector /np.linalg.norm(ca_c_diff_vector)
+        ca_c_unit_vector = ca_c_diff_vector / np.linalg.norm(ca_c_diff_vector)
 
         ca_n_diff_vector = neighbor_residue["CA"].coord - neighbor_residue["N"].coord
-        ca_n_unit_vector = ca_n_diff_vector /np.linalg.norm(ca_n_diff_vector)
+        ca_n_unit_vector = ca_n_diff_vector / np.linalg.norm(ca_n_diff_vector)
 
         return ca_ca_distance, ca_ca_unit_vector, ca_c_unit_vector, ca_n_unit_vector
     

@@ -5,6 +5,7 @@ import math
 import numpy as np
 from Bio.PDB import PDBParser
 from Bio.PDB.vectors import calc_dihedral
+from utils import pdb_utils
 
 class BackboneDihedral(object):
     def __init__(self) -> None:
@@ -30,6 +31,11 @@ class BackboneDihedral(object):
         Returns:
             1D np array: angles.
         """
+        last_residue_id = pdb_utils.get_last_residue_id(pdb_file, chain_id)
+        if residue_num==last_residue_id:
+            # since last residue does not have any dyhedral angles
+            return np.array([0, 0, 0, 0, 0, 0], dtype=np.float32)
+        
         residue = PDBParser(QUIET=True).get_structure("", pdb_file)[0][chain_id][residue_num]
         next_residue = PDBParser(QUIET=True).get_structure("", pdb_file)[0][chain_id][residue_num+1]
         
@@ -40,10 +46,10 @@ class BackboneDihedral(object):
         omega = calc_dihedral(sCA, sC, nN, nCA)
         phi = calc_dihedral(sC, nN, nCA, nC)
         
-        if return_type=="sin": return np.array([math.sin(phi), math.sin(psi), math.sin(omega)])
-        elif return_type=="cos": return np.array([math.cos(phi), math.cos(psi), math.cos(omega)])
-        elif return_type=="both": return np.array([math.sin(phi), math.sin(psi), math.sin(omega), math.cos(phi), math.cos(psi), math.cos(omega)])
-        else: return np.array([phi, psi, omega])
+        if return_type=="sin": return np.array([math.sin(phi), math.sin(psi), math.sin(omega)], dtype=np.float32)
+        elif return_type=="cos": return np.array([math.cos(phi), math.cos(psi), math.cos(omega)], dtype=np.float32)
+        elif return_type=="both": return np.array([math.sin(phi), math.sin(psi), math.sin(omega), math.cos(phi), math.cos(psi), math.cos(omega)], dtype=np.float32)
+        else: return np.array([phi, psi, omega], dtype=np.float32)
     
     
     def of_some_residues(self, pdb_file, chain_id="A", from_residue=1, n_residues=None, return_type=None):
@@ -72,10 +78,10 @@ class BackboneDihedral(object):
         return np.array(all_angles)
             
         
-# pdb_file = "data/pdbs_clean/1a5eA.pdb"        
+# pdb_file = "data/pdbs_clean/1a43A.pdb"        
 # bd = BackboneDihedral()
 
-# angles = bd.of_a_residue(pdb_file=pdb_file, residue_num=121, chain_id="A", return_type="both")
+# angles = bd.of_a_residue(pdb_file=pdb_file, residue_num=219, chain_id="A", return_type="both")
 # print(angles)
 
 # angles = bd.of_some_residues(pdb_file=pdb_file, chain_id="A", from_residue=150, n_residues=6, return_type="both")

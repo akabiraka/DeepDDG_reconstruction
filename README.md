@@ -86,3 +86,5 @@
 * 1hfzA has the 1st residue as 1x, what the ...? I take the starting index as where the residue id becomes integer.
 * 1lmb: the chain ids are "1", "2", "3", "4". I have taken the "4", it has 92 residues, from 1-92 but "3" has 6-92.
 * Entry 2A01 was removed. https://www.rcsb.org/structure/removed/2A01
+* Since last residue does not have any dihedral angles, I return np.array([0, 0, 0]) for backbone dihedral angles.
+* 1a7cA does not have residue 334-347

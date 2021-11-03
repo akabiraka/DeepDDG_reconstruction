@@ -125,16 +125,16 @@ class PDBData(object):
             with open("{}{}{}.fasta".format(output_fasta_dir, pdb_id, chain_id), "w") as fasta_file_handle:
                 fasta_file_handle.write(">{}:{}\n".format(pdb_id.upper(), chain_id))
                 fasta_file_handle.write(seq)
-        print("Generating fasta {}:{}:{} ... ..".format(pdb_id, chain_id, len(seq)))
+        print("Generating fasta {}:{}, Seq-len:{} ... ..".format(pdb_id, chain_id, len(seq)))
         return seq, len(seq)
     
-    def create_mutant_fasta_file(self, wild_fasta_file, fastas_dir, mutation, mutation_site, wild_residue):
+    def create_mutant_fasta_file(self, wild_fasta_file, mutant_fasta_file, mutation_site, wild_residue):
         pdbid = wild_fasta_file.split("/")[2].split(".")[0]
         wild_residue = Polypeptide.three_to_one(wild_residue) if len(wild_residue)==3 else wild_residue
         with open(wild_fasta_file, "r") as wild_fasta_reader:
             lines = wild_fasta_reader.readlines()
             # print(lines)
-            with open("{}{}_{}.fasta".format(fastas_dir, pdbid, mutation), 'w') as mutant_fasta_writer:
+            with open(mutant_fasta_file, 'w') as mutant_fasta_writer:
                 # print(lines[1][mutation_site])# = wild_residue
                 fasta = lines[1][:mutation_site] + wild_residue + lines[1][mutation_site+1:]
                 mutant_fasta_writer.write(lines[0].rstrip()+":mutant\n")

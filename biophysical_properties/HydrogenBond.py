@@ -9,7 +9,7 @@ class HydrogenBond(object):
     def __init__(self, output_dir=None) -> None:
         super().__init__()
         self.output_dir = "data/hbs/" if output_dir is None else output_dir
-        self.hbplus_exe = "3rd_party_items/hbplus_exe"
+        self.hbplus_exe = "3rd_party_items/hbplus"
         self.pdb_id = None
         
 
@@ -26,7 +26,7 @@ class HydrogenBond(object):
 
     def get(self, target_residue_id, neighbor_residue_id):
         hb_file = self.output_dir+self.pdb_id+".hb2"
-        num_of_hydrogen_bonds = np.array([0, 0, 0, 0])
+        num_of_hydrogen_bonds = np.array([0, 0, 0, 0], dtype=np.float32)
         with open(hb_file, "r") as hb_file_reader:
             lines = hb_file_reader.readlines()[8:]
             for line in lines:
