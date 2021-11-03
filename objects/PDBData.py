@@ -40,6 +40,12 @@ class PDBData(object):
         """
         self.pdbl.retrieve_pdb_file(pdb_id, pdir=self.pdb_dir, file_format=self.pdb_format)
     
+    def get_first_chain_id(self, pdb_id):
+        pdb_file = self.pdb_dir + pdb_id + self.pdb_ext
+        structure = self.parser.get_structure("", pdb_file)[0]
+        # print(list(structure.get_chains()))
+        return list(structure.get_chains())[0].id
+    
     def clean(self, pdb_id, chain_id, selector=None, clean_pdb_dir="data/pdbs_clean/"):
         """
             Given a Select instance, this function reads a mmCif protein data and saves into
@@ -54,7 +60,7 @@ class PDBData(object):
         """
         print("Cleaning {}:{} ... ..".format(pdb_id, chain_id))
         pdb_filename = self.pdb_dir + pdb_id + self.pdb_ext
-        structure = self.parser.get_structure(pdb_id, pdb_filename)
+        structure = self.parser.get_structure(pdb_id, pdb_filename)[0]
         self.pdbio.set_structure(structure)
         pdb_filename = clean_pdb_dir + pdb_id+chain_id + ".pdb"
         if selector is None:
@@ -121,6 +127,18 @@ class PDBData(object):
                 fasta_file_handle.write(seq)
         print("Generating fasta {}:{}:{} ... ..".format(pdb_id, chain_id, len(seq)))
         return seq, len(seq)
+    
+    def create_mutant_fasta_file(self, wild_fasta_file, fastas_dir, mutation, mutation_site, wild_residue):
+        pdbid = wild_fasta_file.split("/")[2].split(".")[0]
+        wild_residue = Polypeptide.three_to_one(wild_residue) if len(wild_residue)==3 else wild_residue
+        with open(wild_fasta_file, "r") as wild_fasta_reader:
+            lines = wild_fasta_reader.readlines()
+            # print(lines)
+            with open("{}{}_{}.fasta".format(fastas_dir, pdbid, mutation), 'w') as mutant_fasta_writer:
+                # print(lines[1][mutation_site])# = wild_residue
+                fasta = lines[1][:mutation_site] + wild_residue + lines[1][mutation_site+1:]
+                mutant_fasta_writer.write(lines[0].rstrip()+":mutant\n")
+                mutant_fasta_writer.write(fasta)
     
     def __save_fasta(self, pdb_id, fasta_text, is_save_file=True, fasta_dir="data/fastas/"):
         """Private method for download_fasta method

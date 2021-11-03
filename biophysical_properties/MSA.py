@@ -34,7 +34,7 @@ class MSA(object):
             # subprocess.getoutput("rm data/fastas/{}.hhr".format(pdbid))
         
 # -oa3m query.a3m
-fasta_file = "data/fastas/4eiuA.fasta"
-msa = MSA(db="3rd_party_items/uniprot20_2015_06_bench/uniprot20_2015_06/uniprot20_2015_06_merged/uniprot20_2015_06_merged")
-msa.set_up(fasta_file)
-# MSA.set_up(fasta_file, force=False)
+# fasta_file = "data/fastas/4eiuA.fasta"
+# msa = MSA(db="3rd_party_items/uniprot20_2015_06_bench/uniprot20_2015_06/uniprot20_2015_06_merged/uniprot20_2015_06_merged")
+# msa.set_up(fasta_file)
+# # MSA.set_up(fasta_file, force=False)

@@ -40,7 +40,7 @@ class NeighborResidue(object):
         return n_neighbor_residue_ids.astype(int).tolist()
             
 
-    def get_features(self, clean_pdb_file, wild_fasta_file, chain_id, mutation_site, starting_residue_id, neighbor_residue_id):
+    def get_features(self, clean_pdb_file, chain_id, mutation_site, starting_residue_id, neighbor_residue_id):
         neighbor_residue = PDBParser(QUIET=True).get_structure("", clean_pdb_file)[0][chain_id][neighbor_residue_id]
 
         angles = self.backbone_dihedral.of_a_residue(pdb_file=clean_pdb_file, residue_num=neighbor_residue_id, chain_id=chain_id, return_type="both")
@@ -66,16 +66,15 @@ class NeighborResidue(object):
 
 
 
-clean_pdb_file = "data/pdbs_clean/1a43A.pdb" 
-wild_fasta_file = "data/fastas/1a43A.fasta"
-chain_id = "A"
-mutation_site = 184
-starting_residue_id = pdb_utils.get_starting_residue_index(pdb_file=clean_pdb_file)
+# clean_pdb_file = "data/pdbs_clean/1a43A.pdb" 
+# chain_id = "A"
+# mutation_site = 184
+# starting_residue_id = pdb_utils.get_starting_residue_index(pdb_file=clean_pdb_file)
 
-NR = NeighborResidue()
+# NR = NeighborResidue()
 
-n_neighbor_residue_ids = NR.get_n_neighbor_residue_ids(pdb_file=clean_pdb_file, chain_id=chain_id, center_residue_id=mutation_site, N=5)
-print(n_neighbor_residue_ids)
+# n_neighbor_residue_ids = NR.get_n_neighbor_residue_ids(pdb_file=clean_pdb_file, chain_id=chain_id, center_residue_id=mutation_site, N=5)
+# print(n_neighbor_residue_ids)
 
-for neighbor_residue_id in n_neighbor_residue_ids:
-    NR.get_features(clean_pdb_file, wild_fasta_file, chain_id, mutation_site, starting_residue_id, neighbor_residue_id)
+# for neighbor_residue_id in n_neighbor_residue_ids:
+#     NR.get_features(clean_pdb_file, chain_id, mutation_site, starting_residue_id, neighbor_residue_id)

@@ -45,11 +45,11 @@ class HydrogenBond(object):
         return num_of_hydrogen_bonds
 
 
-pdb_file = "data/pdbs_clean/1a43A.pdb" 
-target_residue_id=184
-neighbor_residue_id=183
+# pdb_file = "data/pdbs_clean/1a43A.pdb" 
+# target_residue_id=184
+# neighbor_residue_id=183
 
-HB = HydrogenBond()
-HB.set_up(pdb_file)
-num_of_hydrogen_bonds = HB.get(target_residue_id, neighbor_residue_id)
-print(num_of_hydrogen_bonds)
+# HB = HydrogenBond()
+# HB.set_up(pdb_file)
+# num_of_hydrogen_bonds = HB.get(target_residue_id, neighbor_residue_id)
+# print(num_of_hydrogen_bonds)

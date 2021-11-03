@@ -77,14 +77,15 @@ class ChainAndAminoAcidSelect(Select):
         self.chain_id = chain_id
         
     def  accept_chain(self, chain):
-        # print(chain.id)
         if chain.id == self.chain_id:
+            # print(chain.id, self.chain_id)
             return 1
         else:
             return 0
             
     def accept_residue(self, residue):
         if residue.get_resname() in standard_aa_names:
+            # print(residue.get_resname())
             return 1
         else:
             return 0
