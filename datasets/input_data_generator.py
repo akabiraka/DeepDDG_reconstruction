@@ -22,7 +22,7 @@ CIF = "mmCif"
 input_file_path = "data/dataset_2.xlsx"
 sheet_name = "train"
 n_rows_to_skip = 0
-n_rows_to_evalutate = 2
+n_rows_to_evalutate = 5
 N_neighbors = 15
 
 # object initialization
@@ -48,7 +48,7 @@ def validate_chain_id(given_pdb_id):
         chain_id = given_pdb_id[5].upper()
     return chain_id
 
-updated_dataset = pd.DataFrame(columns = ["pdb_id", "mutation", "ddG", "wild_residue", "mutation_site", "mutant_residue"])
+updated_dataset = pd.DataFrame(columns = ["pdb_id", "chain_id", "mutation", "ddG", "wild_residue", "mutation_site", "mutant_residue"])
 for i, row in dfs.iterrows():
     if i+1 <= n_rows_to_skip: continue
     
@@ -62,10 +62,9 @@ for i, row in dfs.iterrows():
     mutation_site = int(row["mutation_site"])
     wild_residue = row["wild_residue"]
     mutant_residue = row["mutant_residue"]
-    updated_dataset = updated_dataset.append({"pdb_id":pdb_id, "mutation":mutation, 
+    updated_dataset = updated_dataset.append({"pdb_id":pdb_id, "chain_id":chain_id, "mutation":mutation, 
                                               "ddG":row["ddG"], "wild_residue":wild_residue, 
-                                              "mutation_site":mutation_site, 
-                                              "mutant_residue":mutant_residue}, ignore_index=True)
+                                              "mutation_site":mutation_site, "mutant_residue":mutant_residue}, ignore_index=True)
     # print(pdb_id, chain_id)
     
     clean_pdb_file = pdbs_clean_dir+pdb_id+chain_id+".pdb"
