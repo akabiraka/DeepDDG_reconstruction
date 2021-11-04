@@ -1,8 +1,5 @@
-__author__ = "Anowarul Kabir"
-__updated__ = "2020-07-24 22:16:53"
-
 import sys
-sys.path.append("../protein_data")
+sys.path.append("../DeepDDG_reconstruction")
 
 import os
 

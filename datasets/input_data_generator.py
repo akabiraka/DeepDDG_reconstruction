@@ -21,9 +21,9 @@ fastas_dir = "data/fastas/"
 CIF = "mmCif"
 input_file_path = "data/dataset_2.xlsx"
 sheet_name = "train"
-n_rows_to_skip = 5444
-n_rows_to_evalutate = 2000
-N_neighbors = 5
+n_rows_to_skip = 0
+n_rows_to_evalutate = 2
+N_neighbors = 15
 
 # object initialization
 PDBData = PDBData(pdb_dir=pdb_dir)
@@ -48,6 +48,7 @@ def validate_chain_id(given_pdb_id):
         chain_id = given_pdb_id[5].upper()
     return chain_id
 
+updated_dataset = pd.DataFrame(columns = ["pdb_id", "mutation", "ddG", "wild_residue", "mutation_site", "mutant_residue"])
 for i, row in dfs.iterrows():
     if i+1 <= n_rows_to_skip: continue
     
@@ -61,47 +62,55 @@ for i, row in dfs.iterrows():
     mutation_site = int(row["mutation_site"])
     wild_residue = row["wild_residue"]
     mutant_residue = row["mutant_residue"]
+    updated_dataset = updated_dataset.append({"pdb_id":pdb_id, "mutation":mutation, 
+                                              "ddG":row["ddG"], "wild_residue":wild_residue, 
+                                              "mutation_site":mutation_site, 
+                                              "mutant_residue":mutant_residue}, ignore_index=True)
     # print(pdb_id, chain_id)
     
     clean_pdb_file = pdbs_clean_dir+pdb_id+chain_id+".pdb"
     clean_wild_protein_structure = PDBData.clean(pdb_id=pdb_id, chain_id=chain_id, selector=ChainAndAminoAcidSelect(chain_id))
     wild_fasta_file = fastas_dir+pdb_id+chain_id+".fasta"
-    mutant_fasta_file = fastas_dir+pdb_id+chain_id+"_mutant.fasta"
+    mutant_fasta_file = fastas_dir+pdb_id+chain_id+"_"+mutation+".fasta"
     PDBData.generate_fasta_from_pdb(pdb_id, chain_id, clean_pdb_file, save_as_fasta=True, output_fasta_dir="data/fastas/")
-    PDBData.create_mutant_fasta_file(wild_fasta_file, fastas_dir, mutation, mutation_site, wild_residue)
-    starting_residue_id = pdb_utils.get_starting_residue_index(pdb_file=clean_pdb_file)
+    PDBData.create_mutant_fasta_file(wild_fasta_file, mutant_fasta_file, mutation_site, wild_residue)
+    starting_residue_id = pdb_utils.get_first_residue_id(pdb_file=clean_pdb_file, chain_id=chain_id)
     zero_based_mutation_site = mutation_site-starting_residue_id
-    print("Protein no: {} -> {}, {}, {}, {}, {}".format(i+1, pdb_id, chain_id, mutation, starting_residue_id, zero_based_mutation_site))
+    print("Row no:{}->{}{}, mutation:{}, first_residue_id:{}, zero_based_mutation_site:{}".format(i+1, pdb_id, chain_id, mutation, starting_residue_id, zero_based_mutation_site))
     
     
-    # # computing target residue features
-    # target_residue_features = target_residue.get_features(clean_pdb_file=clean_pdb_file, wild_fasta_file=wild_fasta_file, 
-    #                             mutant_fasta_file=mutant_fasta_file, wild_residue=wild_residue, 
-    #                             mutant_residue=mutant_residue, chain_id=chain_id, 
-    #                             mutation_site=mutation_site, starting_residue_id=starting_residue_id)
-    # # print(target_residue_features.shape, target_residue_features.dtype, target_residue_features)
+    # computing target residue features
+    target_residue_features = target_residue.get_features(clean_pdb_file=clean_pdb_file, wild_fasta_file=wild_fasta_file, 
+                                mutant_fasta_file=mutant_fasta_file, wild_residue=wild_residue, 
+                                mutant_residue=mutant_residue, chain_id=chain_id, 
+                                mutation_site=mutation_site, starting_residue_id=starting_residue_id)
+    # print(target_residue_features.shape, target_residue_features.dtype, target_residue_features)
     
-    # # computing neighbor residue features
-    # all_neighbor_features = []
-    # n_neighbor_residue_ids = neighbor_residue.get_n_neighbor_residue_ids(pdb_file=clean_pdb_file, 
-    #                                                                      chain_id=chain_id, 
-    #                                                                      center_residue_id=mutation_site, N=N_neighbors)
-    # for neighbor_residue_id in n_neighbor_residue_ids:
-    #     neighbor_residue_features = neighbor_residue.get_features(clean_pdb_file=clean_pdb_file, chain_id=chain_id, 
-    #                                   mutation_site=mutation_site, starting_residue_id=starting_residue_id, 
-    #                                   neighbor_residue_id=neighbor_residue_id)
-    #     # print(neighbor_residue_features.shape, neighbor_residue_features.dtype, neighbor_residue_features)
-    #     all_neighbor_features.append(neighbor_residue_features)
+    # computing neighbor residue features
+    all_neighbor_features = []
+    n_neighbor_residue_ids = neighbor_residue.get_n_neighbor_residue_ids(pdb_file=clean_pdb_file, 
+                                                                         chain_id=chain_id, 
+                                                                         center_residue_id=mutation_site, N=N_neighbors)
+    print("All neighbors: ", n_neighbor_residue_ids)
+    for neighbor_residue_id in n_neighbor_residue_ids:
+        print("Neighbor residue id: ", neighbor_residue_id)
+        neighbor_residue_features = neighbor_residue.get_features(clean_pdb_file=clean_pdb_file, chain_id=chain_id, 
+                                      mutation_site=mutation_site, starting_residue_id=starting_residue_id, 
+                                      neighbor_residue_id=neighbor_residue_id)
+        # print(neighbor_residue_features.shape, neighbor_residue_features.dtype, neighbor_residue_features)
+        all_neighbor_features.append(neighbor_residue_features)
         
     # print(np.array(all_neighbor_features).shape)    
     
-    # file_name = pdb_id+"_"+chain_id+"_"+wild_residue+"_"+str(mutation_site)+"_"+mutant_residue
-    # torch.save(torch.tensor(np.array(target_residue_features)), "data/features/"+file_name+".pt")
-    # torch.save(torch.tensor(np.array(all_neighbor_features)), "data/features/"+file_name+"_neighbors.pt")
+    file_name = pdb_id+"_"+chain_id+"_"+mutation
+    torch.save(torch.tensor(np.array(target_residue_features, dtype=np.float32)), "data/features/"+file_name+".pt")
+    torch.save(torch.tensor(np.array(all_neighbor_features, dtype=np.float32)), "data/features/"+file_name+"_neighbors.pt")
     
-    # target_residue_tensor = torch.load("data/features/"+file_name+".pt")
-    # all_neighbor_residue_tensor = torch.load("data/features/"+file_name+"_neighbors.pt")
-    # print(target_residue_tensor.size(), all_neighbor_residue_tensor.size())
+    target_residue_tensor = torch.load("data/features/"+file_name+".pt")
+    print(target_residue_tensor.size())
+    all_neighbor_residue_tensor = torch.load("data/features/"+file_name+"_neighbors.pt")
+    print(all_neighbor_residue_tensor.size())
+    
     
     # # model compatibility test with data
     # from models.DeepDDG import *
@@ -141,3 +150,5 @@ for i, row in dfs.iterrows():
     print()
     if i+1 == n_rows_to_skip+n_rows_to_evalutate: 
         break
+    
+updated_dataset.to_excel("data/dataset_4.xlsx", index=False)

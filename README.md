@@ -57,6 +57,7 @@
       * `ncbi-blast-2.12.0+/bin/update_blastdb.pl --decompress nr.02`
     * To create blast-db from fasta sequences:
       * `3rd_party_items/ncbi-blast-2.12.0+/bin/makeblastdb -dbtype prot -in path/4eiuA.fasta -input_type fasta -out path_to_save/db_name`
+      * `3rd_party_items/ncbi-blast-2.12.0+/bin/makeblastdb -dbtype prot -in 3rd_party_items/rp-seqs-15.fasta -input_type fasta -out 3rd_party_items/rp_req_15/rp_req_15`
 * Pairwise fitness score (PFS) after Multiple sequence alignment (MSA): using HH-suite3.0
   * HH-suite homepage: https://github.com/soedinglab/hh-suite
   * To download precompiled HH-suite: https://mmseqs.com/hhsuite/
@@ -91,3 +92,4 @@
 * Entry 2A01 was removed. https://www.rcsb.org/structure/removed/2A01
 * Since last residue does not have any dihedral angles, I return np.array([0, 0, 0]) for backbone dihedral angles.
 * 1a7cA does not have residue 334-347
+* Some ddG values are out of range ([-10, 10]). 
