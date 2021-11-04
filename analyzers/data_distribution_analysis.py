@@ -40,9 +40,10 @@ def parse_mutation_sites(dataset_df, sheet_name, writer_object=None):
 train_set_df = pd.read_excel("data/dataset_2.xlsx", sheet_name="train")
 test_set_df = pd.read_excel("data/dataset_2.xlsx", sheet_name="test")
 
-unique_proteins_train = train_set_df["protein_name"].drop_duplicates().to_list()
-unique_proteins_test = test_set_df["protein_name"].drop_duplicates().to_list()
-print(len(unique_proteins_train), len(unique_proteins_test)) # 211, 37
+# unique_proteins_train = train_set_df["protein_name"].drop_duplicates().to_list() #211s
+unique_proteins_train = train_set_df["pdb_id"].drop_duplicates().to_list()
+unique_proteins_test = test_set_df["pdb_id"].drop_duplicates().to_list()
+print(len(unique_proteins_train), len(unique_proteins_test)) # 209, 37
 
 common_proteins = list(set(unique_proteins_train) & set(unique_proteins_test))
 print(len(common_proteins)) # 0
@@ -67,8 +68,8 @@ print(len(common_proteins)) # 0
 #                    xlabel="Amino acids", ylabel="Number of mutations", output_filename="amino_acid_vs_mutations_histogram", 
 #                    sort_by_residue=True)
 
-train_set_df["wild_mutant_residue_pair"] = train_set_df["wild_residue"] + "-" + train_set_df["mutant_residue"]
-test_set_df["wild_mutant_residue_pair"] = test_set_df["wild_residue"] + "-" + test_set_df["mutant_residue"]
-plot_col_histogram(train_set_df=train_set_df, test_set_df=test_set_df, col_name="wild_mutant_residue_pair", 
-                   xlabel="Wild-mutant residue pairs", ylabel="Number of mutations", output_filename="wild_mutant_pair_vs_mutations_histogram",
-                   remove_xticks=True, bins=50)
+# train_set_df["wild_mutant_residue_pair"] = train_set_df["wild_residue"] + "-" + train_set_df["mutant_residue"]
+# test_set_df["wild_mutant_residue_pair"] = test_set_df["wild_residue"] + "-" + test_set_df["mutant_residue"]
+# plot_col_histogram(train_set_df=train_set_df, test_set_df=test_set_df, col_name="wild_mutant_residue_pair", 
+#                    xlabel="Wild-mutant residue pairs", ylabel="Number of mutations", output_filename="wild_mutant_pair_vs_mutations_histogram",
+#                    remove_xticks=True, bins=50)

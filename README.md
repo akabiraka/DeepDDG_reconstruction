@@ -6,8 +6,10 @@
 
 * *dataset_1:* is generated from *original_dataset_oct_2020* by changing the column names as "_" separated with lower case letters except for "pH" and "T". All the columns are kept as they were in the original one.
 * *dataset_2*: the *mutation* column is seprated into three columns as *wild_residue*, *mutaion_site* and *mutant_residue*. *Wild* and *mutant* residue are 3-letter amino acid representation.
-* The train set contains 5444 mutation data points from 211 proteins.
+* The train set contains 5444 mutation data points from 209 proteins.
 * The test set contains 276 mutation data points from 37 proteins.
+* Different ddG values are reported for same mutation, which is removed in *dataset_3*. 
+* Now the train and test set contains 4344 mutations of 209 proteins and 253 mutations of 37 proteins
 * The train and test set contains no common proteins.
 * The *output_images/data_distribution* directory compares the train and test set distributions upon:
   * Amino acid vs number of mutations
@@ -52,6 +54,7 @@
     * To download swissprot: `3rd_party_items/ncbi-blast-2.12.0+/bin/update_blastdb.pl --decompress swissprot`
     * To download all "nr" databases: "nr" is the non-redundent version of the sequence database.
       * `3rd_party_items/ncbi-blast-2.12.0+/bin/update_blastdb.pl --decompress nr [*]`
+      * `ncbi-blast-2.12.0+/bin/update_blastdb.pl --decompress nr.02`
     * To create blast-db from fasta sequences:
       * `3rd_party_items/ncbi-blast-2.12.0+/bin/makeblastdb -dbtype prot -in path/4eiuA.fasta -input_type fasta -out path_to_save/db_name`
 * Pairwise fitness score (PFS) after Multiple sequence alignment (MSA): using HH-suite3.0

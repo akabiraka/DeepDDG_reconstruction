@@ -15,6 +15,7 @@ class PSSM(object):
     def __init__(self, db=None, output_dir=None) -> None:
         super().__init__()
         self.db = "3rd_party_items/swissprot_db/swissprot" if db is None else db
+        # self.db = "3rd_party_items/nr.01/nr.01"
         self.output_dir = "data/pssms/" if output_dir is None else output_dir
         self.psiblast_exe = "3rd_party_items/ncbi-blast-2.12.0+/bin/psiblast"
         self.pdb_id = None
@@ -37,9 +38,9 @@ class PSSM(object):
             return
         else:
             print("Computing PSSM for {} using psi-blast ... ...".format(pdbid))    
-            E_VALUE_TRESH = "10"
+            E_VALUE_TRESH = 10
             cline = NcbipsiblastCommandline(cmd=self.psiblast_exe, db=self.db, query=fasta_file,\
-                                            evalue = E_VALUE_TRESH, outfmt = 5, num_iterations=3,\
+                                            evalue=E_VALUE_TRESH, outfmt=5, num_iterations=3,\
                                             save_pssm_after_last_round=True, out_ascii_pssm=output_file_path)# 
                                             # out = out_xml, out_pssm=out_pssm, out_ascii_pssm=output_file_path)
             cline()
@@ -121,15 +122,15 @@ class PSSM(object):
     #     return pssm
         
 
-# fasta_file = "data/fastas/4eiuA.fasta"
+fasta_file = "data/fastas/1a43A.fasta"
 
-# # sample usage
-# pssm = PSSM()
-# pssm.set_up(fasta_file)
+# sample usage
+pssm = PSSM()
+pssm.set_up(fasta_file)
 
-# result = pssm.of_a_residue(1) # check boundary value
-# print(result)
-# result = pssm.of_a_residue(241, type="softmax") # check boundary value
+result = pssm.of_a_residue(1) # check boundary value
+print(result)
+result = pssm.of_a_residue(35, type="softmax") # check boundary value
 
 # result = pssm.of_some_residues(from_residue=0, n_residues=None, type="softmax") # getting pssm for all residues
 # result = pssm.of_some_residues(from_residue=0, n_residues=5, type="softmax")
