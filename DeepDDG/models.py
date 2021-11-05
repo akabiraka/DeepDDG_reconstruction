@@ -1,16 +1,14 @@
 import sys
-
-from torch._C import device
-from torch.nn.modules.activation import ReLU
 sys.path.append("../DeepDDG_reconstruction")
 
 import torch
 from torch import nn
 import torch.optim as optim
 
-class DeepDDG(nn.Module):
+class FCNNS(nn.Module):
     def __init__(self, in_features) -> None:
         super().__init__()
+        self.flatten = nn.Flatten()
         self.fcnns = nn.Sequential(
             nn.Linear(in_features, 100),
             nn.ReLU(),
@@ -23,6 +21,8 @@ class DeepDDG(nn.Module):
         self.softsign = nn.Softsign()
 
     def forward(self, x):
+        x = self.flatten(x)
+        # print(x.shape)
         x = self.fcnns(x)
         # print(x.shape)
         out = self.softsign(x)
@@ -45,7 +45,7 @@ class SRP(nn.Module):
         )
 
     def forward(self, x):
-        x = self.flatten(x)
+        # x = self.flatten(x)
         # print(x.shape)
         x = self.srp(x)
         return x
