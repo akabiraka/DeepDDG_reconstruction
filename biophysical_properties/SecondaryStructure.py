@@ -77,9 +77,10 @@ class SecondaryStructure(object):
             return np.array([[0 if char != letter else 1 for char in self.SS_dictionary] for letter in ss])
 
         
-# pdb_file = "data/pdbs_clean/1a5eA.pdb" 
+# clean_pdb_file = "data/pdbs_clean/1amqA.pdb" 
 # secondaryStructure = SecondaryStructure() 
-# result = secondaryStructure.of_a_residue(pdb_file, -1, return_type="one-hot") # from opposite access check
+# result = secondaryStructure.of_a_residue(pdb_file=clean_pdb_file, residue_index=401-5-1, return_type="one-hot") # from opposite access check
+# print(result)
 # result = secondaryStructure.of_a_residue(pdb_file, 0, return_type="one-hot") # boundary value check
 # result = secondaryStructure.of_a_residue(pdb_file, 155, return_type="one-hot") # boundary value check
 # result = secondaryStructure.of_a_residue(pdb_file, 156, return_type="one-hot") # index out of range check

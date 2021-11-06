@@ -23,8 +23,9 @@ fastas_dir = "data/fastas/"
 CIF = "mmCif"
 input_file_path = "data/dataset_3_train.xlsx"
 output_file_path = "data/dataset_4_train.csv"
+# n_rows_to_skip = 203
 n_rows_to_skip = 0
-n_rows_to_evalutate = 10
+n_rows_to_evalutate = 2
 N_neighbors = 15
 
 # object initialization

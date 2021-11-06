@@ -32,12 +32,22 @@ class BackboneDihedral(object):
             1D np array: angles.
         """
         last_residue_id = pdb_utils.get_last_residue_id(pdb_file, chain_id)
+        # print(last_residue_id)
         if residue_num==last_residue_id:
             # since last residue does not have any dyhedral angles
             return np.array([0, 0, 0, 0, 0, 0], dtype=np.float32)
         
-        residue = PDBParser(QUIET=True).get_structure("", pdb_file)[0][chain_id][residue_num]
-        next_residue = PDBParser(QUIET=True).get_structure("", pdb_file)[0][chain_id][residue_num+1]
+        chain = PDBParser(QUIET=True).get_structure("", pdb_file)[0][chain_id]
+        residue = chain[residue_num]
+        
+        # finding next residue, since sometimes it is not possible to find the next residue by just next residue id.
+        i=1
+        while(1):
+            if chain.has_id(residue_num+i):
+                next_residue = PDBParser(QUIET=True).get_structure("", pdb_file)[0][chain_id][residue_num+i]
+                break
+            i+=1
+        
         
         sN, sCA, sC = residue["N"].get_vector(), residue["CA"].get_vector(), residue["C"].get_vector()
         nN, nCA, nC = next_residue["N"].get_vector(), next_residue["CA"].get_vector(), next_residue["C"].get_vector()
@@ -78,10 +88,10 @@ class BackboneDihedral(object):
         return np.array(all_angles)
             
         
-# pdb_file = "data/pdbs_clean/1a43A.pdb"        
+# pdb_file = "data/pdbs_clean/1am7A.pdb"        
 # bd = BackboneDihedral()
 
-# angles = bd.of_a_residue(pdb_file=pdb_file, residue_num=219, chain_id="A", return_type="both")
+# angles = bd.of_a_residue(pdb_file=pdb_file, residue_num=16, chain_id="A", return_type="both")
 # print(angles)
 
 # angles = bd.of_some_residues(pdb_file=pdb_file, chain_id="A", from_residue=150, n_residues=6, return_type="both")

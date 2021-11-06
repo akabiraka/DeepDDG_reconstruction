@@ -93,3 +93,5 @@
 * Since last residue does not have any dihedral angles, I return np.array([0, 0, 0]) for backbone dihedral angles.
 * 1a7cA does not have residue 334-347
 * Some ddG values are out of range ([-10, 10]). 
+* 1am7A does not have residue of number 17.
+* 1amqA does not have residue of number 407.
