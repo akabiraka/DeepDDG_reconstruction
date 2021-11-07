@@ -29,7 +29,8 @@ class NeighborResidue(object):
         center_residue = PDBParser(QUIET=True).get_structure(pdb_id, pdb_file)[0][chain_id][center_residue_id]
         residues = PDBParser(QUIET=True).get_structure(pdb_id, pdb_file)[0][chain_id].get_residues()
         last_residue_id = self.PDBData.get_last_residue_id(pdb_file, chain_id)
-
+        last_residue = PDBParser(QUIET=True).get_structure(pdb_id, pdb_file)[0][chain_id][last_residue_id]
+        
         residue_id_vs_distance = []
         for i, residue in enumerate(residues):
             if residue.has_id("CA") is False: continue
@@ -38,6 +39,7 @@ class NeighborResidue(object):
             if distance==0.0: continue
             _, residue_id, _ = residue.id
             if residue_id == last_residue_id: continue
+            if residue_id+1 == last_residue_id and last_residue.has_id("CA")==False: continue
             residue_id_vs_distance.append([residue_id, distance])
         
         n_neighbor_residue_ids = np.array(sorted(residue_id_vs_distance, key=lambda x: x[1]))[:N, 0]

@@ -84,7 +84,8 @@ class ChainAndAminoAcidSelect(Select):
             return 0
             
     def accept_residue(self, residue):
-        if residue.get_resname() in standard_aa_names:
+        _, residue_id, insertion_code = residue.id
+        if residue.get_resname() in standard_aa_names and insertion_code==" ":
             # print(residue.get_resname())
             return 1
         else:
