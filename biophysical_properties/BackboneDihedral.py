@@ -89,10 +89,10 @@ class BackboneDihedral(object):
         return np.array(all_angles)
             
         
-# pdb_file = "data/pdbs_clean/1am7A.pdb"        
+# pdb_file = "data/pdbs_clean/1h7mA.pdb"        
 # bd = BackboneDihedral()
 
-# angles = bd.of_a_residue(pdb_file=pdb_file, residue_num=16, chain_id="A", return_type="both")
+# angles = bd.of_a_residue(pdb_file=pdb_file, residue_num=96, chain_id="A", return_type="both")
 # print(angles)
 
 # angles = bd.of_some_residues(pdb_file=pdb_file, chain_id="A", from_residue=150, n_residues=6, return_type="both")
