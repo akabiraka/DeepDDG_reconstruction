@@ -5,7 +5,7 @@ import math
 import numpy as np
 from Bio.PDB import PDBParser
 from Bio.PDB.vectors import calc_dihedral
-from utils import pdb_utils
+from objects.PDBData import PDBData
 
 class BackboneDihedral(object):
     def __init__(self) -> None:
@@ -31,7 +31,8 @@ class BackboneDihedral(object):
         Returns:
             1D np array: angles.
         """
-        last_residue_id = pdb_utils.get_last_residue_id(pdb_file, chain_id)
+        
+        last_residue_id = PDBData().get_last_residue_id(pdb_file, chain_id)
         # print(last_residue_id)
         if residue_num==last_residue_id:
             # since last residue does not have any dyhedral angles

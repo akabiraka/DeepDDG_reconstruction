@@ -3,7 +3,6 @@ sys.path.append("../DeepDDG_reconstruction")
 
 import numpy as np
 from Bio.PDB import PDBParser, Polypeptide
-from utils import pdb_utils
 from biophysical_properties.BackboneDihedral import BackboneDihedral
 from biophysical_properties.SASA import SASA
 from biophysical_properties.SecondaryStructure import SecondaryStructure
@@ -27,10 +26,9 @@ class NeighborResidue(object):
         center_residue = PDBParser(QUIET=True).get_structure(pdb_id, pdb_file)[0][chain_id][center_residue_id]
         residues = PDBParser(QUIET=True).get_structure(pdb_id, pdb_file)[0][chain_id].get_residues()
         
-        starting_residue_index = pdb_utils.get_first_residue_id(pdb_file=pdb_file, chain_id=chain_id)
 
         residue_id_vs_distance = []
-        for i, residue in enumerate(residues, starting_residue_index):
+        for i, residue in enumerate(residues):
             diff_vector = center_residue["CA"].coord - residue["CA"].coord
             distance = np.sqrt(np.sum(diff_vector * diff_vector))
             if distance==0.0: continue
@@ -41,7 +39,7 @@ class NeighborResidue(object):
         return n_neighbor_residue_ids.astype(int).tolist()
             
 
-    def get_features(self, clean_pdb_file, chain_id, mutation_site, starting_residue_id, neighbor_residue_id):
+    def get_features(self, clean_pdb_file, chain_id, mutation_site, zero_based_mutation_site, neighbor_residue_id):
         neighbor_residue = PDBParser(QUIET=True).get_structure("", clean_pdb_file)[0][chain_id][neighbor_residue_id]
 
         angles = self.backbone_dihedral.of_a_residue(pdb_file=clean_pdb_file, residue_num=neighbor_residue_id, chain_id=chain_id, return_type="both")
@@ -49,7 +47,7 @@ class NeighborResidue(object):
         self.sasa.set_up(pdb_file=clean_pdb_file)
         sasa_value = self.sasa.of_a_residue(residue_index=neighbor_residue_id)
 
-        ss_one_hot = self.secondary_structure.of_a_residue(pdb_file=clean_pdb_file, residue_index=mutation_site-starting_residue_id, return_type="one-hot")
+        ss_one_hot = self.secondary_structure.of_a_residue(pdb_file=clean_pdb_file, residue_index=zero_based_mutation_site, return_type="one-hot")
         
         self.hydrogen_bond.set_up(pdb_file=clean_pdb_file)
         num_of_hydrogen_bonds = self.hydrogen_bond.get(target_residue_id=mutation_site, neighbor_residue_id=neighbor_residue_id)

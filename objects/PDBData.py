@@ -196,3 +196,27 @@ class PDBData(object):
         polypeptide = self.ppb.build_peptides(structure).__getitem__(0)
         return polypeptide.get_sequence()
     
+    def get_first_residue_id(self, pdb_file, chain_id):
+        residue_list = list(PDBParser(QUIET=True).get_structure("", pdb_file)[0][chain_id].get_residues())
+        _, residue_id, _ = residue_list[0].id
+        return residue_id
+                
+    def get_last_residue_id(self, pdb_file, chain_id):
+        residue_list = list(PDBParser(QUIET=True).get_structure("", pdb_file)[0][chain_id].get_residues())
+        _, residue_id, _ = residue_list[len(residue_list)-1].id
+        return residue_id
+    
+    def get_residue_ids_dict(self, pdb_file, chain_id):
+        residues = PDBParser(QUIET=True).get_structure("", pdb_file)[0][chain_id].get_residues()
+        residue_ids_dict = {residue.id[1]:i for i, residue in enumerate(residues)}
+        return residue_ids_dict
+    
+    
+# clean_pdb_file = "data/pdbs_clean/1amqA.pdb" 
+# PDBData = PDBData(pdb_dir="data/pdbs/")
+# residue_ids_dict = PDBData.get_residue_ids_dict(pdb_file=clean_pdb_file, chain_id="A")
+# print(residue_ids_dict)
+# print(get_starting_residue_index(pdb_file=clean_pdb_file))
+
+# print(get_last_residue_id("data/pdbs_clean/1a43A.pdb", "A"))
+# print(get_first_residue_id("data/pdbs_clean/1a43A.pdb", "A"))

@@ -46,8 +46,8 @@ for i, learning_rate in enumerate(learning_rates):
     print("initializing variables ... ...")
     device = "cuda" if torch.cuda.is_available() else "cpu"
     beta1 = 0.5
-    batch_size = 2
-    n_epochs = 5
+    batch_size = 5
+    n_epochs = 10
     N_neighbors = 15
     print("batch_size=", batch_size)
     print("n_epochs=", n_epochs)
@@ -63,7 +63,7 @@ for i, learning_rate in enumerate(learning_rates):
     deepddg_optimizer = optim.Adam(fcnn_model.parameters(), lr=learning_rate, betas=(beta1, 0.999))
     
     print("loading training dataset ... ...")
-    train_dataset = DeepDDGDataset(file="data/dataset_4_train.csv", device=device)
+    train_dataset = DeepDDGDataset(file="data/dataset_4_train_keep.csv", device=device)
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     print("train dataset len:", train_dataset.__len__())
     print("train loader size:", len(train_loader))

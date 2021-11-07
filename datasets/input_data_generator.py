@@ -9,7 +9,6 @@ import torch
 from torch import nn
 import torch.optim as optim
 from Bio.PDB import Polypeptide
-from utils import pdb_utils
 from utils.CleanSlate import CleanSlate
 from objects.PDBData import PDBData
 from objects.Selector import ChainAndAminoAcidSelect
@@ -21,11 +20,11 @@ pdb_dir = "data/pdbs/"
 pdbs_clean_dir = "data/pdbs_clean/"
 fastas_dir = "data/fastas/"
 CIF = "mmCif"
+# input_file_path = "data/bad_things_check.xlsx"
 input_file_path = "data/dataset_3_train.xlsx"
 output_file_path = "data/dataset_4_train.csv"
-# n_rows_to_skip = 203
-n_rows_to_skip = 0
-n_rows_to_evalutate = 2
+n_rows_to_skip = 203
+n_rows_to_evalutate = 10000
 N_neighbors = 15
 
 # object initialization
@@ -80,16 +79,16 @@ for i, row in dfs.iterrows():
     mutant_fasta_file = fastas_dir+pdb_id+chain_id+"_"+mutation+".fasta"
     PDBData.generate_fasta_from_pdb(pdb_id, chain_id, clean_pdb_file, save_as_fasta=True, output_fasta_dir="data/fastas/")
     PDBData.create_mutant_fasta_file(wild_fasta_file, mutant_fasta_file, mutation_site, wild_residue)
-    starting_residue_id = pdb_utils.get_first_residue_id(pdb_file=clean_pdb_file, chain_id=chain_id)
-    zero_based_mutation_site = mutation_site-starting_residue_id
-    print("Row no:{}->{}{}, mutation:{}, first_residue_id:{}, zero_based_mutation_site:{}".format(i+1, pdb_id, chain_id, mutation, starting_residue_id, zero_based_mutation_site))
+    residue_ids_dict = PDBData.get_residue_ids_dict(pdb_file=clean_pdb_file, chain_id="A")
+    zero_based_mutation_site = residue_ids_dict.get(mutation_site)
+    print("Row no:{}->{}{}, mutation:{}, zero_based_mutation_site:{}".format(i+1, pdb_id, chain_id, mutation, zero_based_mutation_site))
     
     
     # computing target residue features
     target_residue_features = target_residue.get_features(clean_pdb_file=clean_pdb_file, wild_fasta_file=wild_fasta_file, 
                                 mutant_fasta_file=mutant_fasta_file, wild_residue=wild_residue, 
                                 mutant_residue=mutant_residue, chain_id=chain_id, 
-                                mutation_site=mutation_site, starting_residue_id=starting_residue_id)
+                                mutation_site=mutation_site, zero_based_mutation_site=zero_based_mutation_site)
     # print(target_residue_features.shape, target_residue_features.dtype, target_residue_features)
     
     # computing neighbor residue features
@@ -101,7 +100,7 @@ for i, row in dfs.iterrows():
     for neighbor_residue_id in n_neighbor_residue_ids:
         print("Neighbor residue id: ", neighbor_residue_id)
         neighbor_residue_features = neighbor_residue.get_features(clean_pdb_file=clean_pdb_file, chain_id=chain_id, 
-                                      mutation_site=mutation_site, starting_residue_id=starting_residue_id, 
+                                      mutation_site=mutation_site, zero_based_mutation_site=zero_based_mutation_site, 
                                       neighbor_residue_id=neighbor_residue_id)
         # print(neighbor_residue_features.shape, neighbor_residue_features.dtype, neighbor_residue_features)
         all_neighbor_features.append(neighbor_residue_features)

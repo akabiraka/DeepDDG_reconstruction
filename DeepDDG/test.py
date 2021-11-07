@@ -20,7 +20,7 @@ fcnn_model.eval()
 
 
 print("loading testing dataset ... ...")
-test_dataset = DeepDDGDataset(file="data/dataset_4_train.csv", device=device)
+test_dataset = DeepDDGDataset(file="data/dataset_4_train_keep.csv", device=device)
 test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False)
 print("test dataset len:", test_dataset.__len__())
 print("test loader size:", len(test_loader))
@@ -28,24 +28,29 @@ print("successfully loaded testing dataset ... ...")
 
 
 losses = []
+pred_ddgs = []
+exp_ddgs = []
 for i, data in enumerate(test_loader):
-    pair_tensors, ddG = data
+    pair_tensors, ddg = data
+    exp_ddgs.append(ddg.item())
     pair_tensors = pair_tensors.to(device=device)
-    ddG = ddG.to(device=device) / 10
+    ddg = ddg.to(device=device) / 10
     # print(pair_tensors.dtype, pair_tensors.shape)
-    # print(ddG.dtype, ddG.shape)
+    # print(ddg.dtype, ddg.shape)
     
     # running the model
     srp_outs = srp_model(pair_tensors)
     # print(srp_outs.shape) #batch_size,15,20
     ddg_pred = fcnn_model(srp_outs)
     # print(ddg_pred.shape) #batch_size,1
-    
+    pred_ddgs.append(ddg_pred.item()*10)
     # computing loss, backpropagate and optimizing model
-    loss = criterion(ddG, ddg_pred)
+    loss = criterion(ddg, ddg_pred)
     
     losses.append(loss)
     print(loss)
 
 print(torch.stack(losses).mean().item())
 print("test_losses=", losses)
+print("exp_ddgs=", exp_ddgs)
+print("pred_ddgs=", pred_ddgs)

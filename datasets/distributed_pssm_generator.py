@@ -4,7 +4,6 @@ sys.path.append("../DeepDDG_reconstruction")
 import csv
 import pandas as pd
 import os
-from utils import pdb_utils
 from objects.PDBData import PDBData
 from biophysical_properties.PSSM import PSSM
 from objects.Selector import ChainAndAminoAcidSelect
@@ -28,17 +27,11 @@ pdbs_clean_dir = "data/pdbs_clean/"
 fastas_dir = "data/fastas/"
 CIF = "mmCif"
 input_file_path = "data/dataset_3_train.xlsx"
-# input_file_path = "data/bad_things_check.xlsx"
-output_file_path = "data/dataset_4_train.csv"
 n_rows_to_skip = 0
 n_rows_to_evalutate = 2
 N_neighbors = 15
 
-columns = ["pdb_id", "chain_id", "mutation", "ddG", "wild_residue", "mutation_site", "mutant_residue"]
-with open(output_file_path, 'w') as f:
-        writer = csv.writer(f)
-        writer.writerow(columns)
-        
+     
 # object initialization
 PDBData = PDBData(pdb_dir=pdb_dir)
 pssm = PSSM()
@@ -48,7 +41,7 @@ dfs = pd.read_excel(input_file_path)
 
     
 # i = int(os.environ["SLURM_ARRAY_TASK_ID"])    
-i=208
+i=161
 unique_pdb_ids = dfs["pdb_id"].drop_duplicates().to_list()
 unique_pdb_ids.sort()
 ith_pdb_id = unique_pdb_ids[i]
@@ -69,19 +62,16 @@ for i, row in ith_protein_mutation_dfs.iterrows():
     wild_residue = row["wild_residue"]
     mutant_residue = row["mutant_residue"]
     row=[pdb_id, chain_id, mutation, row["ddG"], wild_residue, mutation_site, mutant_residue]
-    with open(output_file_path, 'a') as f:
-        writer = csv.writer(f)
-        writer.writerow(row)
-    
+   
     clean_pdb_file = pdbs_clean_dir+pdb_id+chain_id+".pdb"
     clean_wild_protein_structure = PDBData.clean(pdb_id=pdb_id, chain_id=chain_id, selector=ChainAndAminoAcidSelect(chain_id))
     wild_fasta_file = fastas_dir+pdb_id+chain_id+".fasta"
     mutant_fasta_file = fastas_dir+pdb_id+chain_id+"_"+mutation+".fasta"
     PDBData.generate_fasta_from_pdb(pdb_id, chain_id, clean_pdb_file, save_as_fasta=True, output_fasta_dir="data/fastas/")
     PDBData.create_mutant_fasta_file(wild_fasta_file, mutant_fasta_file, mutation_site, wild_residue)
-    starting_residue_id = pdb_utils.get_first_residue_id(pdb_file=clean_pdb_file, chain_id=chain_id)
-    zero_based_mutation_site = mutation_site-starting_residue_id
-    print("Row no:{}->{}{}, mutation:{}, first_residue_id:{}, zero_based_mutation_site:{}".format(i+1, pdb_id, chain_id, mutation, starting_residue_id, zero_based_mutation_site))
+    residue_ids_dict = PDBData.get_residue_ids_dict(pdb_file=clean_pdb_file, chain_id="A")
+    zero_based_mutation_site = residue_ids_dict.get(mutation_site)
+    print("Row no:{}->{}{}, mutation:{}, zero_based_mutation_site:{}".format(i+1, pdb_id, chain_id, mutation, zero_based_mutation_site))
 
 
     pssm.set_up(wild_fasta_file)
