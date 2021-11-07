@@ -69,7 +69,7 @@ for i, row in ith_protein_mutation_dfs.iterrows():
     mutant_fasta_file = fastas_dir+pdb_id+chain_id+"_"+mutation+".fasta"
     PDBData.generate_fasta_from_pdb(pdb_id, chain_id, clean_pdb_file, save_as_fasta=True, output_fasta_dir="data/fastas/")
     PDBData.create_mutant_fasta_file(wild_fasta_file, mutant_fasta_file, mutation_site, wild_residue)
-    residue_ids_dict = PDBData.get_residue_ids_dict(pdb_file=clean_pdb_file, chain_id="A")
+    residue_ids_dict = PDBData.get_residue_ids_dict(pdb_file=clean_pdb_file, chain_id=chain_id)
     zero_based_mutation_site = residue_ids_dict.get(mutation_site)
     print("Row no:{}->{}{}, mutation:{}, zero_based_mutation_site:{}".format(i+1, pdb_id, chain_id, mutation, zero_based_mutation_site))
 
