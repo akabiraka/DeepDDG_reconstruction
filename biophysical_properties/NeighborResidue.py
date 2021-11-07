@@ -1,4 +1,6 @@
 import sys
+
+from objects.PDBData import PDBData
 sys.path.append("../DeepDDG_reconstruction")
 
 import numpy as np
@@ -19,20 +21,23 @@ class NeighborResidue(object):
         self.pssm = PSSM()
         self.hydrogen_bond = HydrogenBond()
         self.distance_and_orientation = DistanceAndOrientation()
+        self.PDBData = PDBData()
 
 
     def get_n_neighbor_residue_ids(self, pdb_file, chain_id, center_residue_id, N):
         pdb_id = pdb_file.split("/")[2].split(".")[0]
         center_residue = PDBParser(QUIET=True).get_structure(pdb_id, pdb_file)[0][chain_id][center_residue_id]
         residues = PDBParser(QUIET=True).get_structure(pdb_id, pdb_file)[0][chain_id].get_residues()
-        
+        last_residue_id = self.PDBData.get_last_residue_id(pdb_file, chain_id)
 
         residue_id_vs_distance = []
         for i, residue in enumerate(residues):
+            if residue.has_id("CA") is False: continue
             diff_vector = center_residue["CA"].coord - residue["CA"].coord
             distance = np.sqrt(np.sum(diff_vector * diff_vector))
             if distance==0.0: continue
             _, residue_id, _ = residue.id
+            if residue_id == last_residue_id: continue
             residue_id_vs_distance.append([residue_id, distance])
         
         n_neighbor_residue_ids = np.array(sorted(residue_id_vs_distance, key=lambda x: x[1]))[:N, 0]
