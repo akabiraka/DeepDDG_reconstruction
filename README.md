@@ -8,7 +8,7 @@
 * *dataset_2*: the *mutation* column is seprated into three columns as *wild_residue*, *mutaion_site* and *mutant_residue*. *Wild* and *mutant* residue are 3-letter amino acid representation.
 * The train set contains 5444 mutation data points from 209 proteins.
 * The test set contains 276 mutation data points from 37 proteins.
-* Different ddG values are reported for same mutation, which is removed in *dataset_3*. 
+* Different ddG values are reported for same mutation, which is removed in *dataset_3*.
 * Now the train and test set contains 4344 mutations of 209 proteins and 253 mutations of 37 proteins
 * The train and test set contains no common proteins.
 * The *output_images/data_distribution* directory compares the train and test set distributions upon:
@@ -70,6 +70,7 @@
 *
 
 ## Clarifications
+
 * Column name: PDB ID with modifications to be made
 * 1A43 -> if I want to take a chain, I shall take the "A"
 * 1SPB:P -> I thought P is a chain but not!!! what is this then?
@@ -80,18 +81,21 @@
 * 1CFD_1-75: I think I need to consider only 1-75th residue
 * 1CFD_1-78_F19Y: I think I need to consider 1-78th residue, here 19th is F, will be substituted by Y.
 * 1VII_N68AK70M: N 68 ->A and K 70-> M
-
 * Where to find rp-seq-55 sequence set?
 * The SASA value is taken from rsa file the absolute (ABS) all atoms value, is it right?
 
 ## Data issues
-* for the same mutation of the same protein the dataset contains different ddg values. i.e 1A43 has 9 mutations where 4 of them are repeated with different ddG values.Actions: take the 1st or average 
+
+* for the same mutation of the same protein the dataset contains different ddg values. i.e 1A43 has 9 mutations where 4 of them are repeated with different ddG values.Actions: take the 1st or average
 * Since chain id is not given, I selected the 1st chain by default. Because in many cases chain A is not present.
 * 1hfzA has the 1st residue as 1x, what the ...? I take the starting index as where the residue id becomes integer.
 * 1lmb: the chain ids are "1", "2", "3", "4". I have taken the "4", it has 92 residues, from 1-92 but "3" has 6-92.
 * Entry 2A01 was removed. https://www.rcsb.org/structure/removed/2A01
 * Since last residue does not have any dihedral angles, I return np.array([0, 0, 0]) for backbone dihedral angles.
 * 1a7cA does not have residue 334-347
-* Some ddG values are out of range ([-10, 10]). 
+* Some ddG values are out of range ([-10, 10]).
 * 1am7A does not have residue of number 17.
 * 1amqA does not have residue of number 407.
+* In many cases, a particular neighbor residue does not have Ca, C or N atoms which is required to compute dihedral angles. To minimize the error, this neighbor residue is avaided and set the next residue as neighbor that has those atoms and follow the process again.
+* The last residue cannot be neighbor residue, since it has not phi, psi or omega angles as it has no next residue.
+* 2ptlA_T_19_A does not have any hit while computing PSSM, need bigger database, and no PSSM file generated. Therefore returned 0 for softmax pssm.

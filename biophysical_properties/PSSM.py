@@ -90,6 +90,9 @@ class PSSM(object):
             nd array: 1x20 dimensional array 
         """
         pssm_file = self.__get_pssm_file()
+        if os.path.exists(pssm_file)==False:
+            print("No pssm file is found for ", pssm_file)
+            return np.array([0.0])
         df, residue_dict = self.__parse_pssm_output_file(pssm_file)
         pssm = np.array(df.loc[residue_index, 2:21], dtype=float32)
         # print(pssm)
@@ -126,13 +129,13 @@ class PSSM(object):
 # 1amq	A	C_401_A	3.2	CYS	401	ALA
 # 1arr	A	M_1_A	-0.1	MET	1	ALA
 
-# fasta_file = "data/fastas/1amqA.fasta"
+# fasta_file = "data/fastas/2ptlA_T_19_A.fasta"
 
 # # sample usage
 # pssm = PSSM()
 # pssm.set_up(fasta_file)
 
-# result = pssm.of_a_residue(401-5-1) # check boundary value
+# result = pssm.of_a_residue(19) # check boundary value
 # print(result)
 # result = pssm.of_a_residue(35, type="softmax") # check boundary value
 
