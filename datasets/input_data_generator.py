@@ -16,9 +16,9 @@ pdbs_clean_dir = "data/pdbs_clean/"
 fastas_dir = "data/fastas/"
 CIF = "mmCif"
 # input_file_path = "data/bad_things_check.xlsx"
-input_file_path = "data/dataset_3_train.xlsx"
-output_file_path = "data/dataset_4_train.csv"
-n_rows_to_skip = 3007
+input_file_path = "data/dataset_3_test.xlsx"
+output_file_path = "data/dataset_4_test.csv"
+n_rows_to_skip = 4337
 n_rows_to_evalutate = 1#00000
 N_neighbors = 15
 
@@ -76,6 +76,7 @@ for i, row in dfs.iterrows():
     PDBData.generate_fasta_from_pdb(pdb_id, chain_id, clean_pdb_file, save_as_fasta=True, output_fasta_dir="data/fastas/")
     PDBData.create_mutant_fasta_file(wild_fasta_file, mutant_fasta_file, mutation_site, wild_residue)
     residue_ids_dict = PDBData.get_residue_ids_dict(pdb_file=clean_pdb_file, chain_id=chain_id)
+    # print(residue_ids_dict)
     zero_based_mutation_site = residue_ids_dict.get(mutation_site)
     print("Row no:{}->{}{}, mutation:{}, zero_based_mutation_site:{}".format(i+1, pdb_id, chain_id, mutation, zero_based_mutation_site))
     

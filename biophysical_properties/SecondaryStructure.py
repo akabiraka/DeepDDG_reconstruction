@@ -51,6 +51,7 @@ class SecondaryStructure(object):
         Returns:
             str: a letter defined in self.SS_dictionary
         """
+        # residue_index=58
         ss = self.__get_by_Stride(pdb_file, save=True)
         letter = ss[residue_index]
         if return_type=="letter": return letter
@@ -77,7 +78,7 @@ class SecondaryStructure(object):
             return np.array([[0 if char != letter else 1 for char in self.SS_dictionary] for letter in ss])
 
         
-# clean_pdb_file = "data/pdbs_clean/1amqA.pdb" 
+# clean_pdb_file = "data/pdbs_clean/4hxjA.pdb" 
 # secondaryStructure = SecondaryStructure() 
 # result = secondaryStructure.of_a_residue(pdb_file=clean_pdb_file, residue_index=401-5-1, return_type="one-hot") # from opposite access check
 # print(result)

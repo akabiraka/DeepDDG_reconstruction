@@ -99,3 +99,5 @@
 * In many cases, a particular neighbor residue does not have Ca, C or N atoms which is required to compute dihedral angles. To minimize the error, this neighbor residue is avaided and set the next residue as neighbor that has those atoms and follow the process again.
 * The last residue cannot be neighbor residue, since it has not phi, psi or omega angles as it has no next residue.
 * 2ptlA_T_19_A does not have any hit while computing PSSM, need bigger database, and no PSSM file generated. Therefore returned 0 for softmax pssm.
+* for 4hxj_A_D_141_A, the secondary structure is not of the same size of the number of residues.
+* 5np8A, mutation:T_378_P, does not have residue from 373 to 381. But 369th residue is Thr (T). So changed data accordingly.
