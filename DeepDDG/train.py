@@ -5,7 +5,7 @@ import numpy as np
 import torch
 from torch import nn, optim
 from torch.utils.data import DataLoader
-from DeepDDG.models import SRP, FCNNS
+from DeepDDG.models import SRP, FCNNS, count_params
 from DeepDDG.dataset import DeepDDGDataset
 
 def train():
@@ -40,14 +40,14 @@ def train():
     return torch.stack(losses).mean().item()
 
 
-learning_rates = [0.0008]
+learning_rates = [0.001]
 for i, learning_rate in enumerate(learning_rates):
     print("ith_start=", i)
     print("initializing variables ... ...")
     device = "cuda" if torch.cuda.is_available() else "cpu"
     beta1 = 0.5
-    batch_size = 5
-    n_epochs = 10
+    batch_size = 50
+    n_epochs = 5
     N_neighbors = 15
     print("batch_size=", batch_size)
     print("n_epochs=", n_epochs)
@@ -59,11 +59,15 @@ for i, learning_rate in enumerate(learning_rates):
     srp_model = SRP(in_features=51, out_features=20).to(device)
     fcnn_model = FCNNS(in_features=N_neighbors*20).to(device)
     criterion = nn.MSELoss()
-    srp_optimizer = optim.Adam(srp_model.parameters(), lr=learning_rate, betas=(beta1, 0.999))
-    deepddg_optimizer = optim.Adam(fcnn_model.parameters(), lr=learning_rate, betas=(beta1, 0.999))
+    srp_optimizer = optim.Adam(srp_model.parameters(), lr=learning_rate, betas=(beta1, 0.999), weight_decay=0.01)
+    deepddg_optimizer = optim.Adam(fcnn_model.parameters(), lr=learning_rate, betas=(beta1, 0.999), weight_decay=0.01)
+    
+    print("Printing the number of parameters of SRP and FCNN.")
+    count_params(srp_model)
+    count_params(fcnn_model)
     
     print("loading training dataset ... ...")
-    train_dataset = DeepDDGDataset(file="data/dataset_4_train_keep.csv", device=device)
+    train_dataset = DeepDDGDataset(file="data/dataset_4_train_keep.csv", data_dir="data/features_train/")
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     print("train dataset len:", train_dataset.__len__())
     print("train loader size:", len(train_loader))

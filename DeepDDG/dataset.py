@@ -1,4 +1,6 @@
 import sys
+
+from torch.utils import data
 sys.path.append("../DeepDDG_reconstruction")
 
 import pandas as pd
@@ -8,15 +10,14 @@ import torch
 from torch.utils.data import Dataset
 
 class DeepDDGDataset(Dataset):
-    def __init__(self, file, device):
+    def __init__(self, file, data_dir=None):
         """[summary]
 
         Args:
             file (str): a dataframe filepath 
         """
-        self.data_dir = "data/features_keep/"
+        self.data_dir = "data/features/" if data_dir==None else data_dir
         self.mutation_df = pd.read_csv(file)
-        self.device = device
         # print(self.mutation_df.shape)
     
     def _parse_a_row(self, row):

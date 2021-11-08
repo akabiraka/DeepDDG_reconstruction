@@ -20,7 +20,7 @@ fcnn_model.eval()
 
 
 print("loading testing dataset ... ...")
-test_dataset = DeepDDGDataset(file="data/dataset_4_train_keep.csv", device=device)
+test_dataset = DeepDDGDataset(file="data/dataset_4_train_keep.csv",  data_dir="data/features_train/")
 test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False)
 print("test dataset len:", test_dataset.__len__())
 print("test loader size:", len(test_loader))
