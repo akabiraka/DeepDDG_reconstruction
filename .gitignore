@@ -138,6 +138,7 @@ data/msas/*.msa
 data/msas/*.a3m
 data/sasas/*.rsa
 data/features/*.pt
+data/features_keep/*.pt
 3rd_party_items/*
 software_compilation_dir/*
 outputs/argo_logs/*
