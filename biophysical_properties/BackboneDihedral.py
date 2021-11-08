@@ -46,7 +46,8 @@ class BackboneDihedral(object):
         while(1):
             if chain.has_id(residue_num+i):
                 next_residue = PDBParser(QUIET=True).get_structure("", pdb_file)[0][chain_id][residue_num+i]
-                break
+                if next_residue.has_id("CA") and next_residue.has_id("N") and next_residue.has_id("C"):
+                    break
             i+=1
         
         

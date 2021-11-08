@@ -1,4 +1,3 @@
-from os import write
 import sys
 sys.path.append("../DeepDDG_reconstruction")
 
@@ -6,10 +5,6 @@ import csv
 import pandas as pd
 import numpy as np
 import torch
-from torch import nn
-import torch.optim as optim
-from Bio.PDB import Polypeptide
-from utils.CleanSlate import CleanSlate
 from objects.PDBData import PDBData
 from objects.Selector import ChainAndAminoAcidSelect
 from biophysical_properties.TargetResidue import TargetResidue
@@ -23,16 +18,14 @@ CIF = "mmCif"
 # input_file_path = "data/bad_things_check.xlsx"
 input_file_path = "data/dataset_3_train.xlsx"
 output_file_path = "data/dataset_4_train.csv"
-n_rows_to_skip = 203
-n_rows_to_evalutate = 10000
+n_rows_to_skip = 3007
+n_rows_to_evalutate = 1#00000
 N_neighbors = 15
 
 # object initialization
 PDBData = PDBData(pdb_dir=pdb_dir)
 target_residue = TargetResidue()
 neighbor_residue = NeighborResidue()
-cleanslate = CleanSlate()
-cleanslate.clean_all()
 
 
 # data generation
@@ -44,6 +37,9 @@ def validate_chain_id(given_pdb_id):
     
     if pdb_id == "1lmb": return "4"
     if pdb_id == "1tup": return "A"
+    if pdb_id == "1azp": return "A"
+    if pdb_id == "1bf4": return "A"
+    if pdb_id == "1otr": return "B"
     
     chain_id = PDBData.get_first_chain_id(pdb_id=pdb_id)
     if len(given_pdb_id) > 7 and given_pdb_id[4]==":" and given_pdb_id[6]==":":
@@ -79,7 +75,7 @@ for i, row in dfs.iterrows():
     mutant_fasta_file = fastas_dir+pdb_id+chain_id+"_"+mutation+".fasta"
     PDBData.generate_fasta_from_pdb(pdb_id, chain_id, clean_pdb_file, save_as_fasta=True, output_fasta_dir="data/fastas/")
     PDBData.create_mutant_fasta_file(wild_fasta_file, mutant_fasta_file, mutation_site, wild_residue)
-    residue_ids_dict = PDBData.get_residue_ids_dict(pdb_file=clean_pdb_file, chain_id="A")
+    residue_ids_dict = PDBData.get_residue_ids_dict(pdb_file=clean_pdb_file, chain_id=chain_id)
     zero_based_mutation_site = residue_ids_dict.get(mutation_site)
     print("Row no:{}->{}{}, mutation:{}, zero_based_mutation_site:{}".format(i+1, pdb_id, chain_id, mutation, zero_based_mutation_site))
     

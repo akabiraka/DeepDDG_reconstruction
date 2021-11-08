@@ -33,13 +33,13 @@ class NeighborResidue(object):
         
         residue_id_vs_distance = []
         for i, residue in enumerate(residues):
-            if residue.has_id("CA") is False: continue
+            if residue.has_id("CA")==False or residue.has_id("N")==False or residue.has_id("C")==False: continue
             diff_vector = center_residue["CA"].coord - residue["CA"].coord
             distance = np.sqrt(np.sum(diff_vector * diff_vector))
             if distance==0.0: continue
             _, residue_id, _ = residue.id
             if residue_id == last_residue_id: continue
-            if residue_id+1 == last_residue_id and last_residue.has_id("CA")==False: continue
+            if residue_id+1==last_residue_id and last_residue.has_id("CA")==False: continue
             residue_id_vs_distance.append([residue_id, distance])
         
         n_neighbor_residue_ids = np.array(sorted(residue_id_vs_distance, key=lambda x: x[1]))[:N, 0]
