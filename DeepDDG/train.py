@@ -7,6 +7,7 @@ from torch import nn, optim
 from torch.utils.data import DataLoader
 from DeepDDG.models import SRP, FCNNS, count_params
 from DeepDDG.dataset import DeepDDGDataset
+import matplotlib.pyplot as plt
 
 def train():
     srp_model.train()
@@ -32,22 +33,24 @@ def train():
         loss = criterion(ddG, ddg_pred)
         # print(loss)
         loss.backward()
-        srp_optimizer.step()
-        deepddg_optimizer.step()
+        optimizer.step()
+        # srp_optimizer.step()
+        # deepddg_optimizer.step()
         
         losses.append(loss)
         
     return torch.stack(losses).mean().item()
 
-
-learning_rates = [0.001]
+# learning_rates = [0.0001]
+# eps=.01, weight_decay=0.01
+learning_rates = [0.0001]
 for i, learning_rate in enumerate(learning_rates):
     print("ith_start=", i)
     print("initializing variables ... ...")
     device = "cuda" if torch.cuda.is_available() else "cpu"
     beta1 = 0.5
-    batch_size = 50
-    n_epochs = 5
+    batch_size = 100
+    n_epochs = 50
     N_neighbors = 15
     print("batch_size=", batch_size)
     print("n_epochs=", n_epochs)
@@ -59,8 +62,9 @@ for i, learning_rate in enumerate(learning_rates):
     srp_model = SRP(in_features=51, out_features=20).to(device)
     fcnn_model = FCNNS(in_features=N_neighbors*20).to(device)
     criterion = nn.MSELoss()
-    srp_optimizer = optim.Adam(srp_model.parameters(), lr=learning_rate, betas=(beta1, 0.999), weight_decay=0.01)
-    deepddg_optimizer = optim.Adam(fcnn_model.parameters(), lr=learning_rate, betas=(beta1, 0.999), weight_decay=0.01)
+    optimizer = optim.Adam([{"params":srp_model.parameters()}, {"params": fcnn_model.parameters()}], lr=learning_rate, eps=.01, weight_decay=0.01)
+    # srp_optimizer = optim.Adam(srp_model.parameters(), lr=learning_rate, betas=(beta1, 0.999), weight_decay=0.01)
+    # deepddg_optimizer = optim.Adam(fcnn_model.parameters(), lr=learning_rate, betas=(beta1, 0.999), weight_decay=0.01)
     
     print("Printing the number of parameters of SRP and FCNN.")
     count_params(srp_model)
@@ -76,13 +80,18 @@ for i, learning_rate in enumerate(learning_rates):
     print("training models ... ...")
     best_loss = np.inf        
     train_losses = []
-    for epoch in range(n_epochs):
+    for epoch in range(1, n_epochs+1):
         train_loss = train()    
         train_losses.append(train_loss)
-        print("[{}/{}] loss: {:.4f}".format(epoch+1, n_epochs, train_loss))
+        print("[{}/{}] loss: {:.4f}".format(epoch, n_epochs, train_loss))
         
         if train_loss < best_loss:
             torch.save(srp_model.state_dict(), "outputs/models/srp_model_{}.pth".format(i))
             torch.save(fcnn_model.state_dict(), "outputs/models/fcnn_model_{}.pth".format(i))
             
+        if epoch%10==0:
+            plt.plot(train_losses)
+            plt.show()
+        
+        # print(optimizer.param_groups[0]['lr'])            
     print("train_losses=", train_losses)

@@ -101,3 +101,4 @@
 * 2ptlA_T_19_A does not have any hit while computing PSSM, need bigger database, and no PSSM file generated. Therefore returned 0 for softmax pssm.
 * for 4hxj_A_D_141_A, the secondary structure is not of the same size of the number of residues.
 * 5np8A, mutation:T_378_P, does not have residue from 373 to 381. But 369th residue is Thr (T). So changed data accordingly.
+* 2arfA, mutation:H_1069_Q, when SASA is computed there is no gap between chain_id and residue_num column. This is changed manually.

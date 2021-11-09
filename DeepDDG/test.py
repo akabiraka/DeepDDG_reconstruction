@@ -19,12 +19,19 @@ srp_model.eval()
 fcnn_model.eval()
 
 
-print("loading testing dataset ... ...")
+print("loading training dataset ... ...")
 test_dataset = DeepDDGDataset(file="data/dataset_4_train_keep.csv",  data_dir="data/features_train/")
 test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False)
-print("test dataset len:", test_dataset.__len__())
-print("test loader size:", len(test_loader))
-print("successfully loaded testing dataset ... ...")
+print("train dataset len:", test_dataset.__len__())
+print("train loader size:", len(test_loader))
+print("successfully loaded train dataset ... ...")
+
+# print("loading testing dataset ... ...")
+# test_dataset = DeepDDGDataset(file="data/dataset_4_train_keep.csv",  data_dir="data/features_train/")
+# test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False)
+# print("test dataset len:", test_dataset.__len__())
+# print("test loader size:", len(test_loader))
+# print("successfully loaded testing dataset ... ...")
 
 
 losses = []
@@ -51,6 +58,6 @@ for i, data in enumerate(test_loader):
     print(loss)
 
 print(torch.stack(losses).mean().item())
-print("test_losses=", losses)
-print("exp_ddgs=", exp_ddgs)
-print("pred_ddgs=", pred_ddgs)
+print("train_losses=", losses)
+print("train_exp_ddgs=", exp_ddgs)
+print("train_pred_ddgs=", pred_ddgs)
