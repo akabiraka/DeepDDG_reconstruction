@@ -32,6 +32,7 @@ class DeepDDGDataset(Dataset):
         
         target_residue_tensor = torch.load(self.data_dir+file_name+".pt").unsqueeze(dim=0)
         all_neighbor_residue_tensor = torch.load(self.data_dir+file_name+"_neighbors.pt")
+        all_neighbor_residue_tensor[:, 14] = all_neighbor_residue_tensor[:, 14]/20 # dividing Ca-Ca distance value by 20A, suggested by the paper
         ddG = torch.tensor(ddG, dtype=torch.float32).unsqueeze(dim=0)
         
         broadcast_shape = (all_neighbor_residue_tensor.shape[0], target_residue_tensor.shape[1])
@@ -45,7 +46,7 @@ class DeepDDGDataset(Dataset):
         return pair_tensors, ddG
     
     
-# train_dataset = DeepDDGDataset(file="data/dataset_4.xlsx", device="cuda")
+# train_dataset = DeepDDGDataset(file="data/dataset_4_train_keep.csv", data_dir="data/features_train/")
 # print(train_dataset.__len__())
-# ddG = train_dataset.__getitem__(i=0)
+# train_dataset.__getitem__(i=0)
 # target_residue_tensor, all_neighbor_residue_tensor, ddG = train_dataset.__getitem__(i=0)

@@ -12,13 +12,13 @@ class FCNNS(nn.Module):
         self.fcnns = nn.Sequential(
             nn.Linear(in_features, 100),
             nn.Dropout(p=dropout_probability),
-            nn.ReLU(),
+            nn.ReLU(inplace=True),
             nn.Linear(100, 100),
             nn.Dropout(p=dropout_probability),
-            nn.ReLU(),
+            nn.ReLU(inplace=True),
             nn.Linear(100, 100),
             nn.Dropout(p=dropout_probability),
-            nn.ReLU(),
+            nn.ReLU(inplace=True),
             nn.Linear(100, 1),
             nn.Dropout(p=dropout_probability),
         )
@@ -41,16 +41,16 @@ class SRP(nn.Module):
         self.srp = nn.Sequential(
             nn.Linear(in_features, 100),
             nn.Dropout(p=dropout_probability),
-            nn.ReLU(),
+            nn.ReLU(inplace=True),
             nn.Linear(100, 100),
             nn.Dropout(p=dropout_probability),
-            nn.ReLU(),
+            nn.ReLU(inplace=True),
             nn.Linear(100, 100),
             nn.Dropout(p=dropout_probability),
-            nn.ReLU(),
+            nn.ReLU(inplace=True),
             nn.Linear(100, out_features),
             nn.Dropout(p=dropout_probability),
-            nn.ReLU(),
+            nn.ReLU(inplace=True),
         )
 
     def forward(self, x):

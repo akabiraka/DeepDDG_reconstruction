@@ -1,0 +1,181 @@
+run_1: Keeping all the features. dividing ddg with 10 while loss computation at training
+run_no= 1
+batch_size= 1000
+n_epochs= 100
+lr= 0.001
+beta1= 0.5
+N_neighbors= 15
+eps= 1e-05
+weight_decay= 8e-05
+train MSE:  1.5318015813827515
+train MAE:  0.9066300988197327
+run_1_train CC values
+PCC:  0.7785641623721173 0.0
+SCC:  0.7214807722356343 0.0
+test MSE:  2.3338804244995117
+test MAE:  1.167649745941162
+run_1_test CC values
+PCC:  0.18967378906826363 0.002400607926840117
+SCC:  0.20864529510289914 0.0008205875773688428
+
+run_2: keeping all features, multiplying pred_ddg with 10 while loss computation at training
+run_no= 2
+batch_size= 1000
+n_epochs= 100
+lr= 0.001
+beta1= 0.5
+N_neighbors= 15
+eps= 1e-05
+weight_decay= 8e-05
+train MSE:  4.64072847366333
+train MAE:  1.5282732248306274
+run_2_train CC values
+PCC:  0.8154632518918481 0.0
+SCC:  0.76192913369893 0.0
+test MSE:  1.7747876644134521
+test MAE:  0.995453953742981
+run_2_test CC values
+PCC:  0.16917626230205746 0.006883391668348538
+SCC:  0.17995689656331687 0.004009387485252271
+
+Decision: not much change of run_1 and run_2
+
+run_3: Ca-Ca atom distance is normalized by dividing by 20 as suggested by the paper.
+run_no= 3
+batch_size= 1000
+n_epochs= 100
+lr= 0.001
+N_neighbors= 15
+eps= 0.001
+weight_decay= 0.0008
+train MSE:  1.7400418519973755
+train MAE:  0.9457449316978455
+run_3_train CC values
+PCC:  0.7328771359491238 0.0
+SCC:  0.6731489420473722 0.0
+test MSE:  1.9866849184036255
+test MAE:  1.08876633644104
+run_3_test CC values
+PCC:  0.2403285234262367 0.00010966053855208515
+SCC:  0.20403360693547257 0.0010747532480014847
+
+run_4: Ca-Ca atom distance is normalized by dividing by 20 as suggested by the paper.
+run_no= 4
+batch_size= 1000
+n_epochs= 100
+lr= 0.001
+N_neighbors= 15
+eps= 0.001
+weight_decay= 1e-05
+train MSE:  1.5059401988983154
+train MAE:  0.891989529132843
+run_4_train CC values
+PCC:  0.7722592306930619 0.0
+SCC:  0.7212364914525979 0.0
+test MSE:  2.2196364402770996
+test MAE:  1.140938639640808
+run_4_test CC values
+PCC:  0.2623047032858765 2.2936257943930635e-05
+SCC:  0.26766721444774433 1.5320346110440495e-05
+
+
+run_no= 5
+batch_size= 1000
+n_epochs= 150
+lr= 0.001
+N_neighbors= 15
+weight_decay= 8e-05
+train MSE:  0.8043163418769836
+train MAE:  0.6622394323348999
+run_5_train CC values
+PCC:  0.8918759790522948 0.0
+SCC:  0.8427810588216385 0.0
+test MSE:  1.7805485725402832
+test MAE:  1.031032681465149
+run_5_test CC values
+PCC:  0.26093088987742935 2.5399025799819267e-05
+SCC:  0.2725227600442703 1.0551718609019449e-05
+
+run_6: is an example of overfitting.
+run_no= 6
+batch_size= 500
+n_epochs= 200
+lr= 0.001
+N_neighbors= 15
+weight_decay= 8e-05
+run_6_train CC values
+PCC:  0.9315054445102102 0.0
+SCC:  0.8928342319899141 0.0
+test MSE:  1.7219144105911255
+test MAE:  1.011277675628662
+run_6_test CC values
+PCC:  0.22564665206933454 0.00028857564351290286
+SCC:  0.1947937537473019 0.0018139118464053472
+
+run_7: is an example of overfitting.
+run_no= 7
+batch_size= 1000
+n_epochs= 100
+lr= 0.001
+N_neighbors= 15
+eps= 0.001
+weight_decay= 8e-05
+Total params:  27420 Trainable params:  27420
+Total params:  50401 Trainable params:  50401
+train dataset len: 3998
+validation dataset len: 345
+test dataset len: 254
+train MSE:  1.4650144577026367
+train MAE:  0.880881667137146
+run_7_train CC values
+PCC:  0.774616943276486 0.0
+SCC:  0.7163467916718261 0.0
+val MSE:  5.049705982208252
+val MAE:  1.5572761297225952
+run_7_val CC values
+PCC:  0.2547406017546902 1.6370126181935904e-06
+SCC:  0.31977362061863746 1.2145938088106173e-09
+test MSE:  2.0110228061676025
+test MAE:  1.0887324810028076
+run_7_test CC values
+PCC:  0.17720331023871885 0.0046159877073201575
+SCC:  0.21404164764053574 0.0005940345005612883
+
+run_8: the parameters and network that exactly suggested by the authors.
+run_no= 8
+batch_size= 1000
+n_epochs= 100
+lr= 0.001
+N_neighbors= 15
+weight_decay= 0.0008
+initializing models, loss function and optimizers ... ...
+Printing the number of parameters of SRP and FCNN.
+Total params:  27420 Trainable params:  27420
+Total params:  50401 Trainable params:  50401
+loading training dataset ... ...
+train dataset len: 3998
+train loader size: 3998
+successfully loaded training dataset ... ...
+loading validation dataset ... ...
+validation dataset len: 345
+validation loader size: 345
+successfully loaded validation dataset ... ...
+loading testing dataset ... ...
+test dataset len: 254
+test loader size: 254
+successfully loaded testing dataset ... ...
+train MSE:  1.219366192817688
+train MAE:  0.8047373294830322
+run_8_train CC values
+PCC:  0.8153097918678684 0.0
+SCC:  0.7582241209410643 0.0
+val MSE:  4.9386982917785645
+val MAE:  1.5680561065673828
+run_8_val CC values
+PCC:  0.2936101744251516 2.7489128786372898e-08
+SCC:  0.39077089411979893 4.937910695856933e-14
+test MSE:  1.9585996866226196
+test MAE:  1.098647117614746
+run_8_test CC values
+PCC:  0.2132664929585622 0.0006225577356776854
+SCC:  0.19826597596974785 0.0014940329989893194
