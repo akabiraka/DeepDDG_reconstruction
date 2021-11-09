@@ -1,0 +1,8 @@
+pdb_id,chain_id,mutation,ddG,wild_residue,mutation_site,mutant_residue
+5np8,A,T_369_P,-4.8,THR,369,PRO
+5t43,A,C_153_S,-2.6,CYS,153,SER
+5tr5,A,G_12_R,-0.311004785,GLY,12,ARG
+5tr5,A,I_44_A,-1.148325359,ILE,44,ALA
+5tr5,A,P_37_L,-0.28708134,PRO,37,LEU
+5tr5,A,R_33_Q,-0.645933014,ARG,33,GLN
+5tr5,A,T_55_I,0.23923445,THR,55,ILE
