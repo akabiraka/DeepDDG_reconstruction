@@ -18,8 +18,8 @@ CIF = "mmCif"
 # input_file_path = "data/bad_things_check.xlsx"
 input_file_path = "data/dataset_3_test.xlsx"
 output_file_path = "data/dataset_4_test.csv"
-n_rows_to_skip = 4337
-n_rows_to_evalutate = 1#00000
+n_rows_to_skip = 186
+n_rows_to_evalutate = 100000
 N_neighbors = 15
 
 # object initialization
@@ -35,11 +35,17 @@ dfs = pd.read_excel(input_file_path)
 def validate_chain_id(given_pdb_id):
     pdb_id = row["pdb_id"].lower()[:4]
     
+    # these are in training set
     if pdb_id == "1lmb": return "4"
     if pdb_id == "1tup": return "A"
     if pdb_id == "1azp": return "A"
     if pdb_id == "1bf4": return "A"
     if pdb_id == "1otr": return "B"
+    
+    # these are in test set
+    if pdb_id == "1glu": return "A"
+    if pdb_id == "1hcq": return "A"
+    if pdb_id == "1iv7": return "B"
     
     chain_id = PDBData.get_first_chain_id(pdb_id=pdb_id)
     if len(given_pdb_id) > 7 and given_pdb_id[4]==":" and given_pdb_id[6]==":":

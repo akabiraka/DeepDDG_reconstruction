@@ -43,7 +43,7 @@ class PDBData(object):
     def get_first_chain_id(self, pdb_id):
         pdb_file = self.pdb_dir + pdb_id + self.pdb_ext
         structure = self.parser.get_structure("", pdb_file)[0]
-        # print(list(structure.get_chains()))
+        print(list(structure.get_chains()))
         return list(structure.get_chains())[0].id
     
     def clean(self, pdb_id, chain_id, selector=None, clean_pdb_dir="data/pdbs_clean/"):

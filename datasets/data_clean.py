@@ -7,17 +7,6 @@ def cleate_mutation_columns(dataset_df):
     dataset_df["mutant_residue"] = dataset_df["mutation"].apply(lambda row: Polypeptide.one_to_three(row.split("_")[2]))
     return dataset_df
 
-def validate_chain_id(given_pdb_id):
-    pdb_id = row["pdb_id"].lower()[:4]
-    
-    if pdb_id == "1lmb": return "4"
-    if pdb_id == "1tup": return "A"
-    
-    chain_id = PDBData.get_first_chain_id(pdb_id=pdb_id)
-    if len(given_pdb_id) > 7 and given_pdb_id[4]==":" and given_pdb_id[6]==":":
-        chain_id = given_pdb_id[5].upper()
-    return chain_id
-
 train_set_df = pd.read_excel("data/dataset_1.xlsx", sheet_name="train")
 test_set_df = pd.read_excel("data/dataset_1.xlsx", sheet_name="test")
 
