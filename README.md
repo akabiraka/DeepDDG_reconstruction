@@ -102,3 +102,13 @@
 * for 4hxj_A_D_141_A, the secondary structure is not of the same size of the number of residues.
 * 5np8A, mutation:T_378_P, does not have residue from 373 to 381. But 369th residue is Thr (T). So changed data accordingly.
 * 2arfA, mutation:H_1069_Q, when SASA is computed there is no gap between chain_id and residue_num column. This is changed manually.
+
+## Train cases
+
+* run_1: Keeping all the features, as described in the feature computation process. Here, the ground truth ddG values are divided by 10, then the loss is computed between ddG and predicted ddG which is in between (-1, 1).
+  * run_1_train CC values
+    PCC:  0.33807473489233 1.3958015995734616e-116
+    SCC:  0.3839794757167101 1.3692505266165862e-152
+  * run_1_test CC values
+    PCC:  0.19424742878807566 0.001869589792431708
+    SCC:  0.22313979989017568 0.0003383511619109532

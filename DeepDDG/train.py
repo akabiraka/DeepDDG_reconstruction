@@ -52,6 +52,7 @@ for i, learning_rate in enumerate(learning_rates):
     batch_size = 100
     n_epochs = 50
     N_neighbors = 15
+    run_no = 2
     print("batch_size=", batch_size)
     print("n_epochs=", n_epochs)
     print("init_lr=", learning_rate) 
@@ -86,8 +87,8 @@ for i, learning_rate in enumerate(learning_rates):
         print("[{}/{}] loss: {:.4f}".format(epoch, n_epochs, train_loss))
         
         if train_loss < best_loss:
-            torch.save(srp_model.state_dict(), "outputs/models/srp_model_{}.pth".format(i))
-            torch.save(fcnn_model.state_dict(), "outputs/models/fcnn_model_{}.pth".format(i))
+            torch.save(srp_model.state_dict(), "outputs/models/run_{}_srp_model_{}.pth".format(run_no, i))
+            torch.save(fcnn_model.state_dict(), "outputs/models/run_{}_srp_model_{}.pth".format(run_no, i))
             
         if epoch%10==0:
             plt.plot(train_losses)
