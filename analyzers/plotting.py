@@ -4,7 +4,9 @@ from scipy.stats import pearsonr, spearmanr
 
 def plot_losses(train_losses, validation_losses, filename):    
     plt.plot(train_losses, c="lightgreen", label="Train loss")
+    plt.legend()
     plt.plot(validation_losses, c="salmon", label="Validation loss")
+    plt.legend()
     plt.xlabel("Number of epochs")
     plt.ylabel("Mean-squared error (MSE)")
     plt.savefig("outputs/images/model_analysis/{}.pdf".format(filename), dpi=300, format="pdf", bbox_inches='tight', pad_inches=0.0)

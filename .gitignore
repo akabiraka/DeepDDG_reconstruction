@@ -144,4 +144,3 @@ data/features_test/*.pt
 software_compilation_dir/*
 outputs/argo_logs/*
 outputs/models/*.pth
-outputs/images/*

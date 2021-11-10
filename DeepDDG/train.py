@@ -54,7 +54,7 @@ def train():
         
     return torch.stack(losses).mean().item()
 
-run_no = 8
+run_no = 9
 learning_rates = [0.001]
 for i, learning_rate in enumerate(learning_rates):
     print("ith_start=", i)
@@ -76,6 +76,8 @@ for i, learning_rate in enumerate(learning_rates):
     print("initializing models, loss function and optimizers ... ...") 
     srp_model = SRP(in_features=51, out_features=20).to(device)
     fcnn_model = FCNNS(in_features=N_neighbors*20).to(device)
+    print(srp_model)
+    print(fcnn_model)
     criterion = nn.MSELoss()
     optimizer = optim.Adam([{"params":srp_model.parameters()}, {"params": fcnn_model.parameters()}], lr=learning_rate, weight_decay=weight_decay)
     

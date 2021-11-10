@@ -41,7 +41,7 @@ def test(data_loader):
     return mse, mae, exp_ddgs, pred_ddgs
 
 
-run_no = 8
+run_no = 9
 N_neighbors=15
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
