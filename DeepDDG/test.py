@@ -15,7 +15,7 @@ def test(data_loader):
     pred_ddgs = []
     exp_ddgs = []
     for i, data in enumerate(data_loader):
-        pair_tensors, ddg = data
+        pair_tensors, ddg, exp_classes = data
         exp_ddgs.append(ddg.item())
         pair_tensors = pair_tensors.to(device=device)
         ddg = ddg.to(device=device)
@@ -25,7 +25,8 @@ def test(data_loader):
         # running the model
         srp_outs = srp_model(pair_tensors)
         # print(srp_outs.shape) #batch_size,15,20
-        ddg_pred = fcnn_model(srp_outs)*10
+        ddg_pred, pred_classes = fcnn_model(srp_outs)
+        ddg_pred = ddg_pred*10
         # print(ddg_pred.shape) #batch_size,1
         pred_ddgs.append(ddg_pred.item())
         # computing loss, backpropagate and optimizing model
@@ -38,15 +39,15 @@ def test(data_loader):
     
     mse = torch.stack(mse_losses).mean().item()
     mae = torch.stack(mae_losses).mean().item()
-    return mse, mae, exp_ddgs, pred_ddgs
+    return mse, mae, exp_ddgs, pred_ddgs, exp_classes, pred_classes
 
 
-run_no = 9
+run_no = 11
 N_neighbors=15
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 srp_model = SRP(in_features=51, out_features=20).to(device)
-fcnn_model = FCNNS(in_features=N_neighbors*20).to(device)
+fcnn_model = FCNNS(in_features=20).to(device)
 mse_criterion = torch.nn.MSELoss()
 mae_criterion = torch.nn.L1Loss()
 
@@ -76,7 +77,7 @@ print("test dataset len:", test_dataset.__len__())
 print("test loader size:", len(test_loader))
 print("successfully loaded testing dataset ... ...")
 
-train_mse, train_mae, train_exp_ddgs, train_pred_ddgs = test(train_loader)
+train_mse, train_mae, train_exp_ddgs, train_pred_ddgs, train_exp_classes, train_pred_classes = test(train_loader)
 plot_pred_vs_exp_ddg(train_exp_ddgs, train_pred_ddgs, filename="run_{}_train_pred_vs_exp_ddg".format(run_no))
 plot_deviation_from_expected(train_exp_ddgs, train_pred_ddgs, filename="run_{}_train_deviation_from_exp_ddg".format(run_no))
 
@@ -85,7 +86,7 @@ print("train MAE: ", np.mean(train_mae))
 print("run_{}_train CC values".format(run_no))
 compute_correlation_coefficient(train_exp_ddgs, train_pred_ddgs)
 
-val_mse, val_mae, val_exp_ddgs, val_pred_ddgs = test(validation_loader)
+val_mse, val_mae, val_exp_ddgs, val_pred_ddgs, val_exp_classes, val_pred_classes = test(validation_loader)
 plot_pred_vs_exp_ddg(val_exp_ddgs, val_pred_ddgs, filename="run_{}_val_pred_vs_exp_ddg".format(run_no))
 plot_deviation_from_expected(val_exp_ddgs, val_pred_ddgs, filename="run_{}_val_deviation_from_exp_ddg".format(run_no))
 
@@ -95,7 +96,7 @@ print("run_{}_val CC values".format(run_no))
 compute_correlation_coefficient(val_exp_ddgs, val_pred_ddgs)
 
 
-test_mse, test_mae, test_exp_ddgs, test_pred_ddgs = test(test_loader)
+test_mse, test_mae, test_exp_ddgs, test_pred_ddgs, test_exp_classes, test_pred_classes = test(test_loader)
 plot_pred_vs_exp_ddg(test_exp_ddgs, test_pred_ddgs, filename="run_{}_test_pred_vs_exp_ddg".format(run_no))
 plot_deviation_from_expected(test_exp_ddgs, test_pred_ddgs, filename="run_{}_test_deviation_from_exp_ddg".format(run_no))
 

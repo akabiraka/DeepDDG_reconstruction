@@ -19,25 +19,36 @@ class FCNNS(nn.Module):
             # nn.Linear(100, 100),
             # nn.Dropout(p=dropout_probability),
             # nn.ReLU(inplace=True),
+            
+        )
+        self.regressor = nn.Sequential(
             nn.Linear(100, 1),
-            nn.Dropout(p=dropout_probability),
+            nn.Dropout(p=dropout_probability)
+        )
+        self.classifier = nn.Sequential(
+            nn.Linear(100, 1),
+            nn.Dropout(p=dropout_probability)
         )
         self.softsign = nn.Softsign()
 
     def forward(self, x):
-        x = self.flatten(x)
+        # print(torch.sum(x, 1).shape)
+        x = torch.sum(x, 1)
+        # x = self.flatten(x)
         # print(x.shape)
         x = self.fcnns(x)
         # print(x.shape)
-        out = self.softsign(x)
-        return out
+        x1 = self.regressor(x)
+        pred_ddgs = self.softsign(x1)
+        x2 = self.classifier(x)
+        pred_classes = self.softsign(x2)
+        return pred_ddgs, pred_classes
 
 class SRP(nn.Module):
     """SRP for Shared Residue Pair network"""
 
     def __init__(self, in_features, out_features, dropout_probability=0.15) -> None:
         super().__init__()
-        self.flatten = nn.Flatten()
         self.srp = nn.Sequential(
             nn.Linear(in_features, 100),
             nn.Dropout(p=dropout_probability),
@@ -45,16 +56,15 @@ class SRP(nn.Module):
             # nn.Linear(100, 100),
             # nn.Dropout(p=dropout_probability),
             # nn.ReLU(inplace=True),
-            nn.Linear(100, 100),
-            nn.Dropout(p=dropout_probability),
-            nn.ReLU(inplace=True),
+            # nn.Linear(100, 100),
+            # nn.Dropout(p=dropout_probability),
+            # nn.ReLU(inplace=True),
             nn.Linear(100, out_features),
             nn.Dropout(p=dropout_probability),
             nn.ReLU(inplace=True),
         )
 
     def forward(self, x):
-        # x = self.flatten(x)
         # print(x.shape)
         x = self.srp(x)
         return x

@@ -21,19 +21,21 @@ class DeepDDGDataset(Dataset):
         # print(self.mutation_df.shape)
     
     def _parse_a_row(self, row):
-        return row["pdb_id"], row["chain_id"], row["mutation"], row["ddG"], row["wild_residue"], row["mutation_site"], row["mutant_residue"]
+        class_label = 1.0 if row["ddG"]>=0 else -1.0
+        return row["pdb_id"], row["chain_id"], row["mutation"], row["ddG"], row["wild_residue"], row["mutation_site"], row["mutant_residue"], class_label
         
     def __len__(self):
         return self.mutation_df.shape[0]
     
     def __getitem__(self, i):
-        pdb_id, chain_id, mutation, ddG, wild_residue, mutation_site, mutant_residue = self._parse_a_row(self.mutation_df.loc[i])
+        pdb_id, chain_id, mutation, ddG, wild_residue, mutation_site, mutant_residue, class_label = self._parse_a_row(self.mutation_df.loc[i])
         file_name = pdb_id+"_"+chain_id+"_"+mutation
         
         target_residue_tensor = torch.load(self.data_dir+file_name+".pt").unsqueeze(dim=0)
         all_neighbor_residue_tensor = torch.load(self.data_dir+file_name+"_neighbors.pt")
         all_neighbor_residue_tensor[:, 14] = all_neighbor_residue_tensor[:, 14]/20 # dividing Ca-Ca distance value by 20A, suggested by the paper
         ddG = torch.tensor(ddG, dtype=torch.float32).unsqueeze(dim=0)
+        class_label = torch.tensor(class_label, dtype=torch.float32).unsqueeze(dim=0)
         
         broadcast_shape = (all_neighbor_residue_tensor.shape[0], target_residue_tensor.shape[1])
         target_residue_tensor = torch.broadcast_to(target_residue_tensor, broadcast_shape)
@@ -43,7 +45,7 @@ class DeepDDGDataset(Dataset):
         # print(ddG.dtype, ddG.shape, ddG)
         # print(pair_tensors.shape, pair_tensors.device)
         
-        return pair_tensors, ddG
+        return pair_tensors, ddG, class_label
     
     
 # train_dataset = DeepDDGDataset(file="data/dataset_4_train_keep.csv", data_dir="data/features_train/")

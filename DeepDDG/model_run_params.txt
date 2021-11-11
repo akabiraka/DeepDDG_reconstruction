@@ -179,3 +179,78 @@ test MAE:  1.098647117614746
 run_8_test CC values
 PCC:  0.2132664929585622 0.0006225577356776854
 SCC:  0.19826597596974785 0.0014940329989893194
+
+reducing overfitting
+run_9: made the model size much smaller
+run_no= 9
+batch_size= 1000
+n_epochs= 40
+lr= 0.001
+N_neighbors= 15
+weight_decay= 0.0008
+Total params:  7220 Trainable params:  7220
+Total params:  30201 Trainable params:  30201
+train dataset len: 4013
+train loader size: 4013
+successfully loaded training dataset ... ...
+loading validation dataset ... ...
+validation dataset len: 330
+validation loader size: 330
+successfully loaded validation dataset ... ...
+loading testing dataset ... ...
+test dataset len: 254
+test loader size: 254
+successfully loaded testing dataset ... ...
+train MSE:  3.821629047393799
+train MAE:  1.3659765720367432
+run_9_train CC values
+PCC:  0.35702410171806054 6.10469247913722e-121
+SCC:  0.3519792170827871 2.264550960154427e-117
+val MSE:  2.13177490234375
+val MAE:  1.0296905040740967
+run_9_val CC values
+PCC:  0.2309989479450418 2.2568535138448496e-05
+SCC:  0.32017557957305626 2.6552436395444535e-09
+test MSE:  1.4136782884597778
+test MAE:  0.9072815775871277
+run_9_test CC values
+PCC:  0.2006977303178649 0.0013017258082262913
+SCC:  0.1944234209135309 0.0018514856993856535
+
+
+run_10: rather than concatenating features of SRP module, I summed them up, thus the number of learnable params goes down.
+run_no= 11
+batch_size= 200
+n_epochs= 50
+lr= 0.001
+N_neighbors= 15
+weight_decay= 0.0008
+Total params:  7220 Trainable params:  7220
+Total params:  2302 Trainable params:  2302
+loading training dataset ... ...
+train dataset len: 4013
+train loader size: 4013
+successfully loaded training dataset ... ...
+loading validation dataset ... ...
+validation dataset len: 330
+validation loader size: 330
+successfully loaded validation dataset ... ...
+loading testing dataset ... ...
+test dataset len: 254
+test loader size: 254
+successfully loaded testing dataset ... ...
+train MSE:  3.5435030460357666
+train MAE:  1.3197964429855347
+run_11_train CC values
+PCC:  0.41875663058905893 3.540885213283756e-170
+SCC:  0.3765995969233978 2.0316503563178854e-135
+val MSE:  2.065545082092285
+val MAE:  0.995471179485321
+run_11_val CC values
+PCC:  0.23329713632321586 1.8589393815471134e-05
+SCC:  0.3308455778936606 7.197577872244884e-10
+test MSE:  1.4180076122283936
+test MAE:  0.9122400879859924
+run_11_test CC values
+PCC:  0.23727876532302267 0.0001347502727025812
+SCC:  0.2171904494784085 0.0004901580907081019
