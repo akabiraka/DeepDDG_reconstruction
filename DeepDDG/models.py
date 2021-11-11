@@ -30,6 +30,7 @@ class FCNNS(nn.Module):
             nn.Dropout(p=dropout_probability)
         )
         self.softsign = nn.Softsign()
+        self.sigmoid = nn.Sigmoid()
 
     def forward(self, x):
         # print(torch.sum(x, 1).shape)
@@ -41,7 +42,7 @@ class FCNNS(nn.Module):
         x1 = self.regressor(x)
         pred_ddgs = self.softsign(x1)
         x2 = self.classifier(x)
-        pred_classes = self.softsign(x2)
+        pred_classes = self.sigmoid(x2)
         return pred_ddgs, pred_classes
 
 class SRP(nn.Module):

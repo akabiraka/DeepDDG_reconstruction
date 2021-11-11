@@ -21,9 +21,16 @@ def validate():
         ddG = ddG.to(device=device)
         srp_outs = srp_model(pair_tensors)
         ddg_pred, pred_classes = fcnn_model(srp_outs)
-        mse_loss = mse_criterion(ddG, ddg_pred*10)
-        l1_loss = l1_criterion(exp_classes, pred_classes)
-        loss = alpha*mse_loss+beta*l1_loss
+        mse_loss = mse_criterion(ddg_pred, ddG)#*10)
+        bce_loss = bce_criterion(pred_classes, exp_classes)
+        loss = alpha*mse_loss+beta1*bce_loss
+        
+        # stabilizing_mutation_error_mask = (exp_classes==1.0) & (pred_classes<=0.5)
+        # destabilizing_mutation_error_mask = (exp_classes==0.0) & (pred_classes>0.5)
+        # bce_loss_stab = bce_criterion(pred_classes*stabilizing_mutation_error_mask, exp_classes*stabilizing_mutation_error_mask)
+        # bce_loss_destab = bce_criterion(pred_classes*destabilizing_mutation_error_mask, exp_classes*destabilizing_mutation_error_mask)
+        # loss = beta1*bce_loss_stab+beta2*bce_loss_destab
+        
         losses.append(loss)
     return torch.stack(losses).mean().item()
 
@@ -49,9 +56,16 @@ def train():
         # print(ddg_pred.shape) #batch_size,1
         
         # computing loss, backpropagate and optimizing model
-        mse_loss = mse_criterion(ddG, ddg_pred*10)
-        l1_loss = l1_criterion(exp_classes, pred_classes)
-        loss = alpha*mse_loss+beta*l1_loss
+        mse_loss = mse_criterion(ddg_pred, ddG)#*10)
+        bce_loss = bce_criterion(pred_classes, exp_classes)
+        loss = alpha*mse_loss+beta1*bce_loss
+        
+        # stabilizing_mutation_error_mask = (exp_classes==1.0) & (pred_classes<=0.5)
+        # destabilizing_mutation_error_mask = (exp_classes==0.0) & (pred_classes>0.5)
+        # bce_loss_stab = bce_criterion(pred_classes*stabilizing_mutation_error_mask, exp_classes*stabilizing_mutation_error_mask)
+        # bce_loss_destab = bce_criterion(pred_classes*destabilizing_mutation_error_mask, exp_classes*destabilizing_mutation_error_mask)
+        # loss = beta1*bce_loss_stab+beta2*bce_loss_destab
+        
         
         # print(loss)
         loss.backward()
@@ -72,7 +86,8 @@ for i, learning_rate in enumerate(learning_rates):
     # eps = 0.001
     weight_decay = 0.0008
     alpha = 1
-    beta = 0.01
+    beta1 = 0.5
+    beta2 = .2
     print("run_no=", run_no)
     print("batch_size=", batch_size)
     print("n_epochs=", n_epochs)
@@ -88,6 +103,7 @@ for i, learning_rate in enumerate(learning_rates):
     print(fcnn_model)
     mse_criterion = nn.MSELoss()
     l1_criterion = nn.L1Loss()
+    bce_criterion = nn.BCELoss()
     optimizer = optim.Adam([{"params":srp_model.parameters()}, {"params": fcnn_model.parameters()}], lr=learning_rate, weight_decay=weight_decay)
     
     print("Printing the number of parameters of SRP and FCNN.")
@@ -97,14 +113,14 @@ for i, learning_rate in enumerate(learning_rates):
     # generate_validation_set(n_pdbids=20)
     
     print("loading training dataset ... ...")
-    train_dataset = DeepDDGDataset(file="data/dataset_5_train.csv", data_dir="data/features_train/")
+    train_dataset = DeepDDGDataset(file="data/dataset_5_train.csv", data_dir="data/features_train/", do_normalize=True)
     train_loader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
     print("train dataset len:", train_dataset.__len__())
     print("train loader size:", len(train_loader))
     print("successfully loaded training dataset ... ...")
     
     print("loading validation dataset ... ...")
-    validation_dataset = DeepDDGDataset(file="data/dataset_5_validation.csv", data_dir="data/features_train/")
+    validation_dataset = DeepDDGDataset(file="data/dataset_5_validation.csv", data_dir="data/features_train/", do_normalize=True)
     validation_loader = DataLoader(validation_dataset, batch_size=validation_dataset.__len__(), shuffle=True)
     print("validation dataset len:", validation_dataset.__len__())
     print("validation loader size:", len(validation_loader))

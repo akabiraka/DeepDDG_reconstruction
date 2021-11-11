@@ -27,6 +27,20 @@ def plot_pred_vs_exp_ddg(exp_ddgs, pred_ddgs, filename):
     plt.cla()
     # plt.show()
     
+def plot_pred_vs_exp_class(exp_classes, pred_classes, filename):
+    x = np.array(exp_classes)
+    y = np.array(pred_classes)
+    plt.scatter(x, y, c="salmon", marker=".")
+
+    # m, b = np.polyfit(x, y, 1) #m = slope, b=intercept
+    # plt.plot(x, m*x + b, c="lightgreen")
+
+    plt.xlabel("Expected class")
+    plt.ylabel("Predicted class")
+    plt.savefig("outputs/images/model_analysis/{}.pdf".format(filename), dpi=300, format="pdf", bbox_inches='tight', pad_inches=0.0)
+    plt.cla()
+    # plt.show()
+    
 def plot_deviation_from_expected(exp_ddgs, pred_ddgs, filename):
     x = np.array(exp_ddgs)
     y = np.array(pred_ddgs)

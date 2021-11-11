@@ -14,9 +14,12 @@ def test(data_loader):
     mae_losses = []
     pred_ddgs = []
     exp_ddgs = []
+    pred_classes = []
+    exp_classes = []
     for i, data in enumerate(data_loader):
-        pair_tensors, ddg, exp_classes = data
+        pair_tensors, ddg, exp_class = data
         exp_ddgs.append(ddg.item())
+        exp_classes.append(exp_class.item())
         pair_tensors = pair_tensors.to(device=device)
         ddg = ddg.to(device=device)
         # print(pair_tensors.dtype, pair_tensors.shape)
@@ -25,14 +28,16 @@ def test(data_loader):
         # running the model
         srp_outs = srp_model(pair_tensors)
         # print(srp_outs.shape) #batch_size,15,20
-        ddg_pred, pred_classes = fcnn_model(srp_outs)
-        ddg_pred = ddg_pred*10
+        ddg_pred, pred_class = fcnn_model(srp_outs)
+        # ddg_pred = ddg_pred#*10
         # print(ddg_pred.shape) #batch_size,1
         pred_ddgs.append(ddg_pred.item())
+        pred_classes.append(pred_class.item())
+        
         # computing loss, backpropagate and optimizing model
         
-        mse_loss = mse_criterion(ddg, ddg_pred)
-        mae_loss = mae_criterion(ddg, ddg_pred)
+        mse_loss = mse_criterion(ddg_pred, ddg)
+        mae_loss = mae_criterion(ddg_pred, ddg)
         
         mse_losses.append(mse_loss)
         mae_losses.append(mae_loss)
@@ -57,21 +62,21 @@ srp_model.eval()
 fcnn_model.eval()
 
 print("loading training dataset ... ...")
-train_dataset = DeepDDGDataset(file="data/dataset_5_train.csv", data_dir="data/features_train/")
+train_dataset = DeepDDGDataset(file="data/dataset_5_train.csv", data_dir="data/features_train/", do_normalize=True)
 train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True)
 print("train dataset len:", train_dataset.__len__())
 print("train loader size:", len(train_loader))
 print("successfully loaded training dataset ... ...")
 
 print("loading validation dataset ... ...")
-validation_dataset = DeepDDGDataset(file="data/dataset_5_validation.csv", data_dir="data/features_train/")
+validation_dataset = DeepDDGDataset(file="data/dataset_5_validation.csv", data_dir="data/features_train/", do_normalize=True)
 validation_loader = DataLoader(validation_dataset, batch_size=1, shuffle=True)
 print("validation dataset len:", validation_dataset.__len__())
 print("validation loader size:", len(validation_loader))
 print("successfully loaded validation dataset ... ...")
 
 print("loading testing dataset ... ...")
-test_dataset = DeepDDGDataset(file="data/dataset_4_test_keep.csv",  data_dir="data/features_test/")
+test_dataset = DeepDDGDataset(file="data/dataset_4_test_keep.csv",  data_dir="data/features_test/", do_normalize=True)
 test_loader = DataLoader(test_dataset, batch_size=1, shuffle=False)
 print("test dataset len:", test_dataset.__len__())
 print("test loader size:", len(test_loader))
@@ -79,6 +84,7 @@ print("successfully loaded testing dataset ... ...")
 
 train_mse, train_mae, train_exp_ddgs, train_pred_ddgs, train_exp_classes, train_pred_classes = test(train_loader)
 plot_pred_vs_exp_ddg(train_exp_ddgs, train_pred_ddgs, filename="run_{}_train_pred_vs_exp_ddg".format(run_no))
+plot_pred_vs_exp_class(train_exp_classes, train_pred_classes, filename="run_{}_train_pred_vs_exp_class".format(run_no))
 plot_deviation_from_expected(train_exp_ddgs, train_pred_ddgs, filename="run_{}_train_deviation_from_exp_ddg".format(run_no))
 
 print("train MSE: ", np.mean(train_mse))
@@ -88,6 +94,7 @@ compute_correlation_coefficient(train_exp_ddgs, train_pred_ddgs)
 
 val_mse, val_mae, val_exp_ddgs, val_pred_ddgs, val_exp_classes, val_pred_classes = test(validation_loader)
 plot_pred_vs_exp_ddg(val_exp_ddgs, val_pred_ddgs, filename="run_{}_val_pred_vs_exp_ddg".format(run_no))
+plot_pred_vs_exp_class(val_exp_classes, val_pred_classes, filename="run_{}_val_pred_vs_exp_class".format(run_no))
 plot_deviation_from_expected(val_exp_ddgs, val_pred_ddgs, filename="run_{}_val_deviation_from_exp_ddg".format(run_no))
 
 print("val MSE: ", np.mean(val_mse))
@@ -98,6 +105,7 @@ compute_correlation_coefficient(val_exp_ddgs, val_pred_ddgs)
 
 test_mse, test_mae, test_exp_ddgs, test_pred_ddgs, test_exp_classes, test_pred_classes = test(test_loader)
 plot_pred_vs_exp_ddg(test_exp_ddgs, test_pred_ddgs, filename="run_{}_test_pred_vs_exp_ddg".format(run_no))
+plot_pred_vs_exp_class(test_exp_classes, test_pred_classes, filename="run_{}_test_pred_vs_exp_class".format(run_no))
 plot_deviation_from_expected(test_exp_ddgs, test_pred_ddgs, filename="run_{}_test_deviation_from_exp_ddg".format(run_no))
 
 print("test MSE: ", np.mean(test_mse))
