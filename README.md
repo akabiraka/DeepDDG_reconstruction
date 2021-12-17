@@ -2,6 +2,8 @@
 
 **[DeepDDG](https://pubs.acs.org/doi/10.1021/acs.jcim.8b00697)**: Predicting the Stability Change of Protein Point Mutations Using Neural Networks
 
+Further analysis of model building and evaluation result can be found at the [report](https://github.com/akabiraka/DeepDDG_reconstruction/blob/main/report/DeepDDG.pdf).
+
 ## Data cleaning
 
 * *dataset_1:* is generated from *original_dataset_oct_2020* by changing the column names as "_" separated with lower case letters except for "pH" and "T". All the columns are kept as they were in the original one.
